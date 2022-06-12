@@ -14,6 +14,7 @@ from mimic_iii_analysis import (
     CONFIG_MEXPLORER_CORE_TARGET_EXTRACTION_PATH_KEY
 )
 from mimic_iii_analysis.errors.client_errors import ClientException
+from mimic_iii_analysis.mimic_iii_explorer_client import logger
 from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig
 from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
 from mimic_iii_analysis.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec
@@ -55,6 +56,8 @@ class Client:
         :param id_retrieval_spec: request body (id retrieval parameters)
         :return: retrieved ids
         """
+
+        logger.info('Retrieving ids')
         res = requests.post(url=self.id_retrieval_url, data=id_retrieval_spec.to_json(), headers={"Content-Type": "application/json"})
         if res.ok:
             return res.json()
@@ -67,6 +70,8 @@ class Client:
         :param clinical_text_config: request body (text extraction retrieval parameters)
         :return: root entity ids and extracted clinical texts (DTO)
         """
+
+        logger.info('Extracting clinical texts')
         res = requests.post(url=self.clinical_text_extraction_url, data=clinical_text_config.to_json(), headers={"Content-Type": "application/json"})
         if res.ok:
             return [ClinicalTextResultDto.from_dict(r) for r in res.json()]
@@ -79,6 +84,8 @@ class Client:
         :param target_extraction_spec: request body (target extraction retrieval parameters)
         :return: root entity ids and extracted targets (DTO)
         """
+
+        logger.info('Extracting target values')
         res = requests.post(url=self.target_extraction_url, data=target_extraction_spec.to_json(), headers={"Content-Type": "application/json"})
         if res.ok:
             return [ExtractedTargetDto.from_dict(r) for r in res.json()]

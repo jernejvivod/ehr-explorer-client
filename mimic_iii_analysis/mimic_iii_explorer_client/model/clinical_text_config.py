@@ -15,7 +15,7 @@ class RootEntitiesSpec:
 @dataclass_json
 @dataclass
 class DataRangeSpec:
-    n_records: int
+    first_minutes: int
 
 
 @dataclass_json

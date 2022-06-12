@@ -5,6 +5,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
+from mimic_iii_analysis.text_preprocessing import logger
+
 
 class PreprocessingSteps(Enum):
     LOWERCASE = 'lower-case'
@@ -26,6 +28,8 @@ def preprocess(text: str, steps: Collection[str] = None, output_tokens=False, to
     :param token_len_lim: token length limit (if 'filter-len' preprocessing step specified)
     :return: preprocessed text as tokens or string
     """
+
+    logger.info('Performing text pre-processing with steps: {0}'.format(steps))
 
     # if steps None, use all steps
     if steps is None:
