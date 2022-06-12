@@ -3,10 +3,10 @@ import re
 import time
 from typing import List, Collection
 
-from mimic_iii_analysis import TextOutputFormat
-from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
-from mimic_iii_analysis.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
-from mimic_iii_analysis.text_preprocessing.text_preprocessing import preprocess
+from mimic_iii_explorer_client import TextOutputFormat
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
+from mimic_iii_explorer_client.text_preprocessing.text_preprocessing import preprocess
 
 
 def save_clinical_text(extracted_texts: List[ClinicalTextResultDto],

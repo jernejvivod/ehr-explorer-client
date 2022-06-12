@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 import requests
 
-from mimic_iii_analysis import (
+from mimic_iii_explorer_client import (
     CONFIG_PATH,
     CONFIG_MEXPLORER_CORE_SECTION,
     CONFIG_MEXPLORER_CORE_URL_KEY,
@@ -13,13 +13,13 @@ from mimic_iii_analysis import (
     CONFIG_MEXPLORER_CORE_CLINICAL_TEXT_EXTRACTION_PATH_KEY,
     CONFIG_MEXPLORER_CORE_TARGET_EXTRACTION_PATH_KEY
 )
-from mimic_iii_analysis.errors.client_errors import ClientException
-from mimic_iii_analysis.mimic_iii_explorer_client import logger
-from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig
-from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
-from mimic_iii_analysis.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec
-from mimic_iii_analysis.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
-from mimic_iii_analysis.mimic_iii_explorer_client.model.target_extraction_spec import TargetExtractionSpecDto
+from mimic_iii_explorer_client.errors.client_errors import ClientException
+from mimic_iii_explorer_client.mimic_iii_explorer_client import logger
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_spec import TargetExtractionSpecDto
 
 
 class Client:

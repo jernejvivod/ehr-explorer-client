@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
-from mimic_iii_analysis.text_preprocessing import logger
+from mimic_iii_explorer_client.text_preprocessing import logger
 
 
 class PreprocessingSteps(Enum):
