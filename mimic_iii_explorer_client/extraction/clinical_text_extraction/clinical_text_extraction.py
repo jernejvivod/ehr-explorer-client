@@ -1,10 +1,10 @@
 import random
 from typing import Sequence, Union, List
 
-from mimic_iii_analysis.extraction import logger
-from mimic_iii_analysis.mimic_iii_explorer_client.client import Client
-from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig, RootEntitiesSpec, DataRangeSpec
-from mimic_iii_analysis.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
+from mimic_iii_explorer_client.extraction import logger
+from mimic_iii_explorer_client.mimic_iii_explorer_client.client import Client
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig, RootEntitiesSpec, DataRangeSpec
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
 
 
 def extract_clinical_text(root_entity_name: str,

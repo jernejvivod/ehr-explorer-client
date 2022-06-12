@@ -1,12 +1,13 @@
 import argparse
 
-from mimic_iii_analysis import Tasks, TargetSpec, TextOutputFormat
-from mimic_iii_analysis.data_saving import save
-from mimic_iii_analysis.extraction.clinical_text_extraction.clinical_text_extraction import extract_clinical_text
-from mimic_iii_analysis.extraction.id_retrieval.id_retrieval import retrieve_ids
-from mimic_iii_analysis.extraction.target_extraction.target_extraction import extract_target
-from mimic_iii_analysis.utils.cli_args_types import dir_path
-from mimic_iii_analysis import logger
+from mimic_iii_explorer_client import Tasks, TargetSpec, TextOutputFormat
+from mimic_iii_explorer_client import logger
+from mimic_iii_explorer_client.data_saving import save
+from mimic_iii_explorer_client.extraction.clinical_text_extraction.clinical_text_extraction import extract_clinical_text
+from mimic_iii_explorer_client.extraction.id_retrieval.id_retrieval import retrieve_ids
+from mimic_iii_explorer_client.extraction.target_extraction.target_extraction import extract_target
+from mimic_iii_explorer_client.utils.cli_args_types import dir_path
+
 
 def main(**kwargs):
     # CLINICAL TEXT EXTRACTION
@@ -17,7 +18,7 @@ def main(**kwargs):
         retrieved_ids = retrieve_ids(kwargs['root_entity_name'], kwargs['id_property_name'], kwargs['filter_specs'])
         extracted_texts = extract_clinical_text(kwargs['root_entity_name'], kwargs['id_property_name'], retrieved_ids, kwargs['first_minutes'], kwargs['limit_ids'])
         extracted_target = extract_target(kwargs['target'], [e.root_entity_id for e in extracted_texts])
-        save.save_clinical_text(extracted_texts, extracted_target, kwargs['output_format'], kwargs['output_dir'])
+        save.save_clinical_text(extracted_texts, extracted_target, kwargs['output_format'], kwargs['output_dir'], preprocessing_steps=None)
     else:
         raise NotImplementedError('Task {0} not implemented'.format(kwargs['task']))
 

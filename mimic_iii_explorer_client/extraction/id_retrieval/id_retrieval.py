@@ -1,8 +1,8 @@
 from typing import Sequence, Tuple, List
 
-from mimic_iii_analysis.extraction import logger
-from mimic_iii_analysis.mimic_iii_explorer_client.client import Client
-from mimic_iii_analysis.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec, IdRetrievalFilterSpec
+from mimic_iii_explorer_client.extraction import logger
+from mimic_iii_explorer_client.mimic_iii_explorer_client.client import Client
+from mimic_iii_explorer_client.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec, IdRetrievalFilterSpec
 
 
 def retrieve_ids(root_entity_name: str,
