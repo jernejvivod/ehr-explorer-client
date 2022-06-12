@@ -6,15 +6,16 @@ from mimic_iii_analysis.extraction.clinical_text_extraction.clinical_text_extrac
 from mimic_iii_analysis.extraction.id_retrieval.id_retrieval import retrieve_ids
 from mimic_iii_analysis.extraction.target_extraction.target_extraction import extract_target
 from mimic_iii_analysis.utils.cli_args_types import dir_path
-
+from mimic_iii_analysis import logger
 
 def main(**kwargs):
     # CLINICAL TEXT EXTRACTION
     if kwargs['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
+        logger.info('Running clinical text extraction task')
 
         # extract clinical texts, extract target values, save in specified output format
         retrieved_ids = retrieve_ids(kwargs['root_entity_name'], kwargs['id_property_name'], kwargs['filter_specs'])
-        extracted_texts = extract_clinical_text(kwargs['root_entity_name'], kwargs['id_property_name'], retrieved_ids, kwargs['n_first_texts'], kwargs['limit_ids'])
+        extracted_texts = extract_clinical_text(kwargs['root_entity_name'], kwargs['id_property_name'], retrieved_ids, kwargs['first_minutes'], kwargs['limit_ids'])
         extracted_target = extract_target(kwargs['target'], [e.root_entity_id for e in extracted_texts])
         save.save_clinical_text(extracted_texts, extracted_target, kwargs['output_format'], kwargs['output_dir'])
     else:
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     extract_clinical_text_parser.add_argument('--root-entity-name', type=str, default='AdmissionsEntity', help='Root entity name')
     extract_clinical_text_parser.add_argument('--id-property-name', type=str, default='hadmId', help='Root entity id property name')
     extract_clinical_text_parser.add_argument('--filter-specs', nargs='+', help='Entity filters to apply')
-    extract_clinical_text_parser.add_argument('--n-first-texts', type=int, help='Number of texts to extract fo each entity')
+    extract_clinical_text_parser.add_argument('--first-minutes', type=int, help='Limit texts to the texts no more than the specified number of minutes from the initial timestamp')
     extract_clinical_text_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
     extract_clinical_text_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                               choices=[v.value for v in TextOutputFormat], help='Output format')
