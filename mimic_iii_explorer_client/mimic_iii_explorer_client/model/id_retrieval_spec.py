@@ -25,4 +25,4 @@ class IdRetrievalFilterSpec:
 class IdRetrievalSpec:
     entity_name: str
     id_property: str
-    filter_specs: List[IdRetrievalFilterSpec]
+    filter_specs: List[IdRetrievalFilterSpec] or None
