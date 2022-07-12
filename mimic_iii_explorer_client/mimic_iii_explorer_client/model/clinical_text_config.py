@@ -22,4 +22,4 @@ class DataRangeSpec:
 @dataclass
 class ClinicalTextConfig:
     root_entities_spec: RootEntitiesSpec
-    data_range_spec: DataRangeSpec
+    data_range_spec: DataRangeSpec or None
