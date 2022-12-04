@@ -3,14 +3,15 @@ import re
 import time
 from typing import List, Collection
 
+from generated_client import ClinicalTextResult, ExtractedTarget
 from mimic_iii_explorer_client import TextOutputFormat
 from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
 from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
 from mimic_iii_explorer_client.text_preprocessing.text_preprocessing import preprocess
 
 
-def save_clinical_text(extracted_texts: List[ClinicalTextResultDto],
-                       extracted_target: List[ExtractedTargetDto],
+def save_clinical_text(extracted_texts: List[ClinicalTextResult],
+                       extracted_target: List[ExtractedTarget],
                        output_format: str,
                        output_dir: str,
                        preprocessing_steps: Collection[str] = None) -> None:
