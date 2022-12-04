@@ -1,8 +1,8 @@
 from typing import Sequence, Tuple, List
 
+from generated_client import IdRetrievalSpec, IdRetrievalFilterSpec
+from mimic_iii_explorer_client.client.ids_api_client import IdsApiClient
 from mimic_iii_explorer_client.extraction import logger
-from mimic_iii_explorer_client.mimic_iii_explorer_client.client import Client
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.id_retrieval_spec import IdRetrievalSpec, IdRetrievalFilterSpec
 
 
 def retrieve_ids(root_entity_name: str,
@@ -17,14 +17,14 @@ def retrieve_ids(root_entity_name: str,
     :return:
     """
     # initialize client
-    client = Client()
+    client = IdsApiClient()
 
     # get ids
     ids_req_body = IdRetrievalSpec(
         root_entity_name,
         id_property,
-        [IdRetrievalFilterSpec(f[0], f[1], f[2], f[3]) for f in filter_specs] if filter_specs is not None else None
+        [IdRetrievalFilterSpec(entity_name=f[0], property_name=f[1], comparator=f[2], property_val=f[3]) for f in filter_specs] if filter_specs is not None else None
     )
 
     logger.info('Requesting mimic-iii-explorer to retrieve the ids')
-    return client.retrieve_ids(ids_req_body)
+    return client.ids(ids_req_body)

@@ -1,20 +1,28 @@
 import random
 from typing import Sequence, Union, List
 
+from generated_client import ClinicalTextResult, ClinicalTextConfig, RootEntitiesSpec, DataRangeSpec
+from mimic_iii_explorer_client.client.clinical_text_api_client import ClinicalTextApiClient
 from mimic_iii_explorer_client.extraction import logger
-from mimic_iii_explorer_client.mimic_iii_explorer_client.client import Client
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_config import ClinicalTextConfig, RootEntitiesSpec, DataRangeSpec
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
 
 
-def extract_clinical_text(root_entity_name: str,
-                          id_property: str,
-                          ids: Sequence[str],
-                          first_minutes: Union[int, None],
-                          limit_ids: Union[float, int] = 1.0
-                          ) -> List[ClinicalTextResultDto]:
+def extract_clinical_text(
+        clinical_text_entity_name: str,
+        text_property_name: str,
+        clinical_text_entity_id_property_name: str,
+        date_time_properties_names: List[str],
+        root_entity_name: str,
+        id_property: str,
+        ids: Sequence[str],
+        first_minutes: Union[int, None],
+        limit_ids: Union[float, int] = 1.0
+) -> List[ClinicalTextResult]:
     """Retrieve clinical texts from the MIMIC-III database.
 
+    :param clinical_text_entity_name: name of clinical text entity
+    :param text_property_name: property name of text property of clinical text entity
+    :param clinical_text_entity_id_property_name: ID property name of clinical text entity
+    :param date_time_properties_names: property names of date/time columns (in the order they should be considered)
     :param root_entity_name: root entity name
     :param id_property: id property of root entity
     :param ids: root entity ids
@@ -24,7 +32,7 @@ def extract_clinical_text(root_entity_name: str,
     """
 
     # initialize client
-    client = Client()
+    client = ClinicalTextApiClient()
 
     # limit ids (if applicable)
     try:
@@ -49,8 +57,12 @@ def extract_clinical_text(root_entity_name: str,
 
     # extract clinical texts
     texts_req_body = ClinicalTextConfig(
-        RootEntitiesSpec(root_entity_name, id_property, ids_limited),
-        None if first_minutes is None else DataRangeSpec(first_minutes)
+        clinical_text_entity_name=clinical_text_entity_name,
+        text_property_name=text_property_name,
+        clinical_text_entity_id_property_name=clinical_text_entity_id_property_name,
+        date_time_properties_names=date_time_properties_names,
+        root_entities_spec=RootEntitiesSpec(root_entity=root_entity_name, id_property=id_property, ids=ids_limited),
+        data_range_spec=None if first_minutes is None else DataRangeSpec(first_minutes)
     )
     logger.info('Requesting mimic-iii-explorer to extract the clinical texts')
-    return client.extract_clinical_text(texts_req_body)
+    return client.clinical_text(texts_req_body)

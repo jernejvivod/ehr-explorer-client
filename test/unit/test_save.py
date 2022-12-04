@@ -1,11 +1,9 @@
 import glob
+import os
 import unittest
 
+from generated_client import ClinicalTextResult, ExtractedTarget
 from mimic_iii_explorer_client.data_saving import save
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.clinical_text_result import ClinicalTextResultDto
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_result import ExtractedTargetDto
-
-import os
 
 
 class TestSave(unittest.TestCase):
@@ -29,12 +27,12 @@ class TestSave(unittest.TestCase):
         os.remove(saved_file_path)
 
     def test_save_simple(self):
-        clinical_text_result_dto = ClinicalTextResultDto(1, 'this is a test')
-        extracted_target_dto = ExtractedTargetDto(1, 0)
+        clinical_text_result = ClinicalTextResult(1, 'this is a test')
+        extracted_target = ExtractedTarget(1, 0)
 
         save.save_clinical_text(
-            [clinical_text_result_dto],
-            [extracted_target_dto],
+            [clinical_text_result],
+            [extracted_target],
             "fast-text",
             ".",
             None
