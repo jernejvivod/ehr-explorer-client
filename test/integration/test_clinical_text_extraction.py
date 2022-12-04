@@ -1,7 +1,10 @@
 import http
 import unittest
 
-from generated_client import RootEntitiesSpec, DataRangeSpec, ClinicalTextConfig, ApiException
+from generated_client import ApiException
+from generated_client.models.clinical_text_config import ClinicalTextConfig
+from generated_client.models.data_range_spec import DataRangeSpec
+from generated_client.models.root_entities_spec import RootEntitiesSpec
 from mimic_iii_explorer_client.client.clinical_text_api_client import ClinicalTextApiClient
 
 

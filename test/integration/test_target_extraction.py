@@ -1,6 +1,7 @@
 import unittest
 
-from generated_client import TargetExtractionSpec, ExtractedTarget
+from generated_client.models.extracted_target import ExtractedTarget
+from generated_client.models.target_extraction_spec import TargetExtractionSpec
 from mimic_iii_explorer_client.client.target_api_client import TargetApiClient
 from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_spec import TargetTypeEnum
 
