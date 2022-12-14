@@ -3,8 +3,8 @@ import re
 import time
 from typing import List, Collection
 
-from generated_client import ClinicalTextResult, ExtractedTarget
 from mimic_iii_explorer_client import TextOutputFormat
+from generated_client import ClinicalTextResult, ExtractedTarget
 from mimic_iii_explorer_client.text_preprocessing.text_preprocessing import preprocess
 
 

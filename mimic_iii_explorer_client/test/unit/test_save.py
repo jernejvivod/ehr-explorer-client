@@ -14,7 +14,7 @@ class TestSave(unittest.TestCase):
             [],
             [],
             "fast-text",
-            ".",
+            "",
             None
         )
 
@@ -34,7 +34,7 @@ class TestSave(unittest.TestCase):
             [clinical_text_result],
             [extracted_target],
             "fast-text",
-            ".",
+            "",
             None
         )
 

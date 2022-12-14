@@ -13,3 +13,5 @@ chmod +x "${PROJECT_DIR_PATH}"/"${GENERATOR_JAR_NAME}"
 "${PROJECT_DIR_PATH}"/mimic_iii_explorer_client/client/mimic-iii-explorer-api/doc/rest-spec/v1/mexplorer-openapi.yaml -o \
 "${PROJECT_DIR_PATH}"/mimic_iii_explorer_client/client/gen \
 --additional-properties=generateSourceCodeOnly=true,packageName=generated_client
+
+touch "${PROJECT_DIR_PATH}"/mimic_iii_explorer_client/client/gen/__init__.py
