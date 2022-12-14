@@ -1,12 +1,17 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='mimic-iii-explorer-client',
     version='0.1.0',
-    packages=['test', 'test.unit', 'test.integration', 'mimic_iii_explorer_client', 'mimic_iii_explorer_client.utils', 'mimic_iii_explorer_client.errors', 'mimic_iii_explorer_client.extraction', 'mimic_iii_explorer_client.extraction.id_retrieval', 'mimic_iii_explorer_client.extraction.target_extraction', 'mimic_iii_explorer_client.extraction.clinical_text_extraction', 'mimic_iii_explorer_client.data_saving', 'mimic_iii_explorer_client.text_preprocessing', 'mimic_iii_explorer_client.mimic_iii_explorer_client', 'mimic_iii_explorer_client.mimic_iii_explorer_client.model'],
+    packages=find_packages(),
     url='https://github.com/jernejvivod/mimic-iii-explorer-client',
     license='MIT',
     author='Jernej Vivod',
     author_email='vivod.jernej@gmail.com',
-    description='Client for the mimic-iii-explorer'
+    description='Client for the mimic-iii-explorer',
+    entry_points={
+        'console_scripts': [
+            'my-script=mimic_iii_explorer_client.__main__:main',
+        ]
+    },
 )

@@ -20,7 +20,7 @@ class TextOutputFormat(Enum):
     FAST_TEXT = 'fast-text'
 
 
-CONFIG_PATH = 'config/config'
+CONFIG_PATH = 'config/config'  # configuration file path (relative to the top-level package root directory
 CONFIG_MEXPLORER_CORE_SECTION = 'mimic-iii-explorer'
 CONFIG_MEXPLORER_CORE_URL_KEY = 'core-api-url'
 CONFIG_MEXPLORER_CORE_ID_RETRIEVAL_PATH_KEY = 'id-retrieval-path'

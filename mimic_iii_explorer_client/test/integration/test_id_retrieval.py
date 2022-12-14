@@ -1,13 +1,10 @@
+import http
 import unittest
 
 from generated_client import ApiException
 from generated_client.models.id_retrieval_filter_spec import IdRetrievalFilterSpec
 from generated_client.models.id_retrieval_spec import IdRetrievalSpec
 from mimic_iii_explorer_client.client.ids_api_client import IdsApiClient
-
-import http
-
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.id_retrieval_spec import ComparatorEnum
 
 
 class TestIdRetrieval(unittest.TestCase):
@@ -59,14 +56,14 @@ class TestIdRetrieval(unittest.TestCase):
         filter_spec1 = IdRetrievalFilterSpec(
             entity_name='PatientsEntity',
             property_name='gender',
-            comparator=ComparatorEnum.EQUAL.value,
+            comparator='EQUAL',
             property_val='M'
         )
 
         filter_spec2 = IdRetrievalFilterSpec(
             entity_name='AdmissionsEntity',
             property_name='admissionType',
-            comparator=ComparatorEnum.EQUAL.value,
+            comparator='EQUAL',
             property_val='EMERGENCY'
         )
 
