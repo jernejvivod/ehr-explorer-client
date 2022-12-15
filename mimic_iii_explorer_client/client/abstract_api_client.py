@@ -15,7 +15,7 @@ class AbstractApiClient(ABC):
 
         # parse server paths
         config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), '../..', CONFIG_PATH if config_path is None else config_path))
+        config.read(os.path.join(os.path.dirname(__file__), '../', CONFIG_PATH if config_path is None else config_path))
 
         # base API path
         self.client_config = generated_client.Configuration(
