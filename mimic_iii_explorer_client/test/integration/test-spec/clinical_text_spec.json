@@ -1,0 +1,13 @@
+{
+  "clinical_text_entity_name": "NoteEventsEntity",
+  "text_property_name": "text",
+  "clinical_text_entity_id_property_name": "rowId",
+  "date_time_properties_names": ["charttime", "chartdate"],
+  "root_entities_spec": {
+    "root_entity": "AdmissionsEntity",
+    "id_property": "hadmId"
+  },
+  "data_range_spec": {
+    "first_minutes" : 1440
+  }
+}

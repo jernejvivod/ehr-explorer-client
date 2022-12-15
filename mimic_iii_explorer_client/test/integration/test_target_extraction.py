@@ -3,7 +3,6 @@ import unittest
 from generated_client.models.extracted_target import ExtractedTarget
 from generated_client.models.target_extraction_spec import TargetExtractionSpec
 from mimic_iii_explorer_client.client.target_api_client import TargetApiClient
-from mimic_iii_explorer_client.mimic_iii_explorer_client.model.target_extraction_spec import TargetTypeEnum
 
 
 class TestTargetExtraction(unittest.TestCase):
@@ -14,7 +13,7 @@ class TestTargetExtraction(unittest.TestCase):
         id2 = 100053
 
         target_extraction_spec = TargetExtractionSpec(
-            target_type=TargetTypeEnum.PATIENT_DIED_DURING_ADMISSION.value,
+            target_type="PATIENT_DIED_DURING_ADMISSION",
             ids=[id1, id2]
         )
 
@@ -28,7 +27,7 @@ class TestTargetExtraction(unittest.TestCase):
 
     def test_target_extraction_with_invalid_target_spec(self):
         target_extraction_spec = TargetExtractionSpec(
-            target_type=TargetTypeEnum.PATIENT_DIED_DURING_ADMISSION.value,
+            target_type="PATIENT_DIED_DURING_ADMISSION",
             ids=[-1]
         )
 
