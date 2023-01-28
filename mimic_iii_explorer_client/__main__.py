@@ -5,7 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "client/gen"))
 
 import argparse  # noqa: E402
 
-from mimic_iii_explorer_client import Tasks, TargetSpec, TextOutputFormat  # noqa: E402
+from mimic_iii_explorer_client import Tasks, TextOutputFormat  # noqa: E402
 from mimic_iii_explorer_client import logger  # noqa: E402
 from mimic_iii_explorer_client.data_saving import save  # noqa: E402
 from mimic_iii_explorer_client.extraction.clinical_text_extraction.clinical_text_extraction import extract_clinical_text  # noqa: E402
@@ -44,13 +44,13 @@ def main(args):
         # limit ids
         ids_limitd = limit_ids(retrieved_ids, parsed_args['limit_ids'])
 
-        # extract clinical text
-        clinical_text_config = parse_request_spec_clinical_text(parsed_args['clinical_text_spec_path'], ids_limitd)
-        extracted_texts = extract_clinical_text(clinical_text_config)
-
         # extract target values
         target_extraction_spec = parse_request_spec_target(parsed_args['target_spec_path'], ids_limitd)
         extracted_target = extract_target(target_extraction_spec)
+
+        # extract clinical text
+        clinical_text_config = parse_request_spec_clinical_text(parsed_args['clinical_text_spec_path'], list(map(lambda x: x.root_entity_id, extracted_target)))
+        extracted_texts = extract_clinical_text(clinical_text_config)
 
         # pre-process and save clinical text
         save.save_clinical_text(extracted_texts, extracted_target, parsed_args['output_format'], parsed_args['output_dir'], preprocessing_steps=None)

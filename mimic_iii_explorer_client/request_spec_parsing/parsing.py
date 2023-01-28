@@ -38,6 +38,7 @@ def parse_request_spec_clinical_text(spec_file_path: str, ids: List[str] = None)
         text_property_name=json_dict['text_property_name'],
         clinical_text_entity_id_property_name=json_dict['clinical_text_entity_id_property_name'],
         clinical_text_date_time_properties_names=json_dict['clinical_text_date_time_properties_names'],
+        root_entity_datetime_property_for_cutoff=json_dict['root_entity_datetime_property_for_cutoff'],
         root_entities_spec=RootEntitiesSpec(
             root_entity=json_dict['root_entities_spec']['root_entity'],
             id_property=json_dict['root_entities_spec']['id_property'],
@@ -45,7 +46,7 @@ def parse_request_spec_clinical_text(spec_file_path: str, ids: List[str] = None)
         ),
         clinical_text_extraction_duration_spec=ClinicalTextExtractionDurationSpec(
             first_minutes=json_dict['clinical_text_extraction_duration_spec']['first_minutes']
-        )
+        ) if json_dict['clinical_text_extraction_duration_spec'] is not None else None
     )
 
 
