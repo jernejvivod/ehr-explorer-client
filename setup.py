@@ -9,6 +9,7 @@ setup(
     author='Jernej Vivod',
     author_email='vivod.jernej@gmail.com',
     description='Client for the mimic-iii-explorer',
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'my-script=mimic_iii_explorer_client.__main__:main',
