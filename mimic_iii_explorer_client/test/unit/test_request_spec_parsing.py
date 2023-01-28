@@ -12,13 +12,13 @@ class TestRequestSpecParsing(unittest.TestCase):
         expected_id_property = 'hadmId'
         expected_filter_specs = [
             {
-                'entity_name': 'A',
+                'foreign_key_path': ['A', 'B'],
                 'property_name': 'a',
                 'comparator': 'EQUAL',
                 'property_val': 'test_val'
             },
             {
-                'entity_name': 'B',
+                'foreign_key_path': ['A', 'C'],
                 'property_name': 'b',
                 'comparator': 'MORE',
                 'property_val': 25
@@ -58,35 +58,35 @@ class TestRequestSpecParsing(unittest.TestCase):
 
     def test_parse_request_spec_clinical_text(self):
         spec_file_path = './spec.json'
-        expected_clinical_text_entity_name = 'MY_ENTITY'
+        expected_foreign_key_path = 'MY_ENTITY'
         expected_text_property_name = 'text'
         expected_clinical_text_entity_id_property_name = 'id'
-        expected_date_time_properties_names = ['timestamp']
+        expected_clinical_text_date_time_properties_names = ['timestamp']
         expected_root_entities_spec = {
             'root_entity': 'AdmissionsEntity',
             'id_property': 'hadmId',
             'ids': [1, 2, 3]
         }
-        expected_data_range_spec = {
+        expected_clinical_text_extraction_duration_spec = {
             'first_minutes': 10
         }
 
         with open(spec_file_path, 'w') as f:
             json.dump({
-                'clinical_text_entity_name': expected_clinical_text_entity_name,
+                'foreign_key_path': expected_foreign_key_path,
                 'text_property_name': expected_text_property_name,
                 'clinical_text_entity_id_property_name': expected_clinical_text_entity_id_property_name,
-                'date_time_properties_names': expected_date_time_properties_names,
+                'clinical_text_date_time_properties_names': expected_clinical_text_date_time_properties_names,
                 'root_entities_spec': expected_root_entities_spec,
-                'data_range_spec': expected_data_range_spec
+                'clinical_text_extraction_duration_spec': expected_clinical_text_extraction_duration_spec
             }, f)
 
         spec = parse_request_spec_clinical_text(spec_file_path)
-        assert spec.clinical_text_entity_name == expected_clinical_text_entity_name
+        assert spec.foreign_key_path == expected_foreign_key_path
         assert spec.text_property_name == expected_text_property_name
         assert spec.clinical_text_entity_id_property_name == expected_clinical_text_entity_id_property_name
-        assert spec.date_time_properties_names == expected_date_time_properties_names
+        assert spec.clinical_text_date_time_properties_names == expected_clinical_text_date_time_properties_names
         assert spec.root_entities_spec.to_dict() == expected_root_entities_spec
-        assert spec.data_range_spec.to_dict() == expected_data_range_spec
+        assert spec.clinical_text_extraction_duration_spec.to_dict() == expected_clinical_text_extraction_duration_spec
 
         os.remove(spec_file_path)
