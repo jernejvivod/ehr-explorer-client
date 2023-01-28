@@ -54,14 +54,14 @@ class TestIdRetrieval(unittest.TestCase):
 
     def test_retrieval_with_filters(self):
         filter_spec1 = IdRetrievalFilterSpec(
-            entity_name='PatientsEntity',
+            foreign_key_path=['AdmissionsEntity', 'PatientsEntity'],
             property_name='gender',
             comparator='EQUAL',
             property_val='M'
         )
 
         filter_spec2 = IdRetrievalFilterSpec(
-            entity_name='AdmissionsEntity',
+            foreign_key_path=['AdmissionsEntity'],
             property_name='admissionType',
             comparator='EQUAL',
             property_val='EMERGENCY'
