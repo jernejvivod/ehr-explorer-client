@@ -3,8 +3,8 @@ import re
 import time
 from typing import List, Collection
 
-from mimic_iii_explorer_client import TextOutputFormat
 from generated_client import ClinicalTextResult, ExtractedTarget
+from mimic_iii_explorer_client import TextOutputFormat
 from mimic_iii_explorer_client.text_preprocessing.text_preprocessing import preprocess
 
 
@@ -12,6 +12,7 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
                        extracted_target: List[ExtractedTarget],
                        output_format: str,
                        output_dir: str,
+                       output_file_suffix: str,
                        preprocessing_steps: Collection[str] = None) -> None:
     """Save extracted clinical texts in specified format.
 
@@ -19,11 +20,12 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
     :param extracted_target: extracted target values (DTOs)
     :param output_format: output format specifier
     :param output_dir: output directory
+    :param output_file_suffix: suffix to add to the output filename
     :param preprocessing_steps: preprocessing steps (use all if set to None)
     """
     if output_format == TextOutputFormat.FAST_TEXT.value:
         _RE_COMBINE_WHITESPACE = re.compile(r"\s+")
-        with open(os.path.join(output_dir, 'data-' + time.strftime("%Y%m%d-%H%M%S") + '.txt'), 'w') as f:
+        with open(os.path.join(output_dir, 'data-' + time.strftime("%Y%m%d-%H%M%S") + (output_file_suffix if output_file_suffix else "") + '.txt'), 'w') as f:
             for extracted_text in extracted_texts:
                 # pre-process
                 text = _RE_COMBINE_WHITESPACE.sub(' ', extracted_text.text.replace('\n', ' ')).strip()
