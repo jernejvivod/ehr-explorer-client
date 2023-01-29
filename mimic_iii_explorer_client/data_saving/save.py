@@ -1,6 +1,7 @@
 import os
 import re
 import time
+from collections import Counter
 from typing import List, Collection
 
 from generated_client import ClinicalTextResult, ExtractedTarget
@@ -40,3 +41,9 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
                 f.write('__label__{0}\n'.format(target_val[0].target_value))
     else:
         raise ValueError('Format \'{0}\' not supported'.format(output_format))
+
+
+def save_target_statistics(target_value_counts: Counter, output_dir: str):
+    with open(os.path.join(output_dir, 'stats-' + time.strftime("%Y%m%d-%H%M%S") + '.txt'), 'w') as f:
+        for (k, v) in target_value_counts.items():
+            f.write("{0}: {1}\n".format(k, v))

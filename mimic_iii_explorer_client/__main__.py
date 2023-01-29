@@ -1,3 +1,4 @@
+import collections
 import os
 import sys
 
@@ -34,6 +35,12 @@ def main(args):
                                                       choices=[v.value for v in TextOutputFormat], help='Output format')
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
 
+    # TARGET STATISTICS EXTRACTION
+    clinical_text_extraction_spec_parser = subparsers.add_parser(Tasks.EXTRACT_TARGET_STATISTICS.value)
+    clinical_text_extraction_spec_parser.add_argument('--ids-spec-path', type=str, required=True)
+    clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
+    clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
+
     parsed_args = vars(parser.parse_args(args))
 
     # CLINICAL TEXT EXTRACTION
@@ -66,6 +73,20 @@ def main(args):
         else:
             get_target_and_text(ids_limited, None)
 
+    elif parsed_args['task'] == Tasks.EXTRACT_TARGET_STATISTICS.value:
+        logger.info('Running target statistics extraction task')
+
+        # extract ids
+        id_retrieval_spec = parse_request_spec_ids(parsed_args['ids_spec_path'])
+        retrieved_ids = retrieve_ids(id_retrieval_spec)
+
+        # extract target values
+        target_extraction_spec = parse_request_spec_target(parsed_args['target_spec_path'], retrieved_ids)
+        extracted_target = extract_target(target_extraction_spec)
+
+        # save target value counts
+        target_value_counts = collections.Counter(map(lambda x: x.target_value, extracted_target))
+        save.save_target_statistics(target_value_counts, parsed_args['output_dir'])
     else:
         raise NotImplementedError('Task {0} not implemented'.format(parsed_args['task']))
 

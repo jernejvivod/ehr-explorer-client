@@ -10,6 +10,7 @@ logger.setLevel(logging.INFO)
 
 class Tasks(Enum):
     EXTRACT_CLINICAL_TEXT = 'extract-clinical-text'
+    EXTRACT_TARGET_STATISTICS = 'extract-target-statistics'
 
 
 class TargetSpec(Enum):

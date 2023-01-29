@@ -1,0 +1,4 @@
+{
+  "entity_name": "PatientsEntity",
+  "id_property": "subjectId"
+}
