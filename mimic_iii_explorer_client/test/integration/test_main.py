@@ -52,3 +52,18 @@ class MyTestCase(unittest.TestCase):
 
         os.remove(file_path_train)
         os.remove(file_path_test)
+
+    def test_main_extract_target_statistics(self):
+        args = [
+            'extract-target-statistics',
+            '--ids-spec-path', self.__get_rel_path('test-spec/ids_spec.json'),
+            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json')
+        ]
+        main(args)
+
+        file_path = glob.glob(self.__get_rel_path('*.txt'))[0]
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            self.assertGreater(len(lines), 0)
+
+        os.remove(file_path)
