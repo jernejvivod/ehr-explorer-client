@@ -18,4 +18,5 @@ python3 "$script_path/../../mimic_iii_explorer_client" \
     --clinical-text-spec-path "$clinical_text_spec_path" \
     --target-spec-path "$target_spec_path" \
     --limit-ids 0.01 \
+    --test-size 0.2 \
     --output-dir "$output_dir"

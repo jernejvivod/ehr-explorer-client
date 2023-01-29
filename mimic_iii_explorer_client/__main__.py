@@ -14,7 +14,7 @@ from mimic_iii_explorer_client.extraction.clinical_text_extraction.clinical_text
 from mimic_iii_explorer_client.extraction.id_retrieval.id_retrieval import retrieve_ids  # noqa: E402
 from mimic_iii_explorer_client.extraction.target_extraction.target_extraction import extract_target  # noqa: E402
 from mimic_iii_explorer_client.request_spec_parsing.parsing import parse_request_spec_clinical_text, parse_request_spec_ids, parse_request_spec_target  # noqa: E402
-from mimic_iii_explorer_client.utils.cli_args_types import dir_path, train_size  # noqa: E402
+from mimic_iii_explorer_client.utils.cli_args_types import dir_path, test_size  # noqa: E402
 from mimic_iii_explorer_client.utils.utils import limit_ids  # noqa: E402
 
 
@@ -29,7 +29,7 @@ def main(args):
     clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
-    clinical_text_extraction_spec_parser.add_argument('--test-size', type=train_size, help='Test set size (no train-test split is performed if not specified)')
+    clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
     clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                                       choices=[v.value for v in TextOutputFormat], help='Output format')
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
