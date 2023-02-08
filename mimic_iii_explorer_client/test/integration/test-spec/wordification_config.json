@@ -1,0 +1,23 @@
+{
+  "concatenation_spec" : {
+    "concatenation_scheme" : "ZERO"
+  },
+  "root_entities_spec" : {
+      "root_entity": "PatientsEntity",
+      "id_property": "subjectId",
+      "ids": [291]
+  },
+  "property_spec": {
+    "entries": [
+      {
+        "entity": "PatientsEntity",
+        "properties": ["gender", "icuStaysEntitys"]
+      },
+      {
+        "entity": "IcuStaysEntity",
+        "properties": ["dbSource"],
+        "property_for_limit": "outTime"
+      }
+    ]
+  }
+}
