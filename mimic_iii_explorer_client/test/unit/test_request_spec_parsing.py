@@ -2,7 +2,12 @@ import json
 import os
 import unittest
 
-from mimic_iii_explorer_client.request_spec_parsing.parsing import parse_request_spec_ids, parse_request_spec_target, parse_request_spec_clinical_text
+from mimic_iii_explorer_client.request_spec_parsing.parsing import (
+    parse_request_spec_ids,
+    parse_request_spec_target,
+    parse_request_spec_clinical_text,
+    parse_request_spec_wordification
+)
 
 
 class TestRequestSpecParsing(unittest.TestCase):
@@ -88,5 +93,92 @@ class TestRequestSpecParsing(unittest.TestCase):
         assert spec.clinical_text_date_time_properties_names == expected_clinical_text_date_time_properties_names
         assert spec.root_entities_spec.to_dict() == expected_root_entities_spec
         assert spec.clinical_text_extraction_duration_spec.to_dict() == expected_clinical_text_extraction_duration_spec
+
+        os.remove(spec_file_path)
+
+    def test_parse_request_spec_wordification(self):
+        spec_file_path = './spec.json'
+
+        expected_root_entities_spec = {
+            'root_entity': 'PatientsEntity',
+            'id_property': 'subject_id',
+            'ids': [1, 2, 3]
+        }
+
+        expected_property_spec = {
+            'entries': [
+                {
+                    'entity': 'PatientsEntity',
+                    'properties': ['gender'],
+                    'property_for_limit': None
+                },
+                {
+                    'entity': 'IcuStaysEntity',
+                    'properties': ['dbSource'],
+                    'property_for_limit': 'outTime'
+                }
+            ],
+            'root_entity_and_lime_limit': [
+                {
+                    'root_entity_id': 1,
+                    'time_lim': '2023-02-08T11:04:30.123386566',
+                },
+                {
+                    'root_entity_id': 2,
+                    'time_lim': '2023-02-07T11:04:30.123386566',
+                },
+                {
+                    'root_entity_id': 3,
+                    'time_lim': '2023-02-06T11:04:30.123386566',
+                }
+            ]
+        }
+
+        expected_composite_columns_spec = {
+            'entries': [
+                {
+                    'foreign_key_path1': ['PatientsEntity'],
+                    'property1': 'dob',
+                    'foreign_key_path2': ['PatientsEntity', 'IcuStaysEntity'],
+                    'property2': 'inTime',
+                    'composite_name': 'name',
+                    'combiner': 'DATE_DIFF'
+                }
+            ]
+        }
+
+        expected_value_transformation_spec = {
+            'entries': [
+                {
+                    'entity': 'IcuStaysEntity',
+                    '_property': 'inTime',
+                    'transform': {
+                        'kind': 'ROUNDING',
+                        'date_diff_round_type': 'TEN_YEARS',
+                        'rounding_multiple': None
+                    }
+                }
+            ]
+        }
+
+        expected_concatenation_spec = {
+            'concatenation_scheme': 'ONE'
+        }
+
+        with open(spec_file_path, 'w') as f:
+            json.dump({
+                'root_entities_spec': expected_root_entities_spec,
+                'property_spec': expected_property_spec,
+                'composite_columns_spec': expected_composite_columns_spec,
+                'value_transformation_spec': expected_value_transformation_spec,
+                'concatenation_spec': expected_concatenation_spec,
+            }, f)
+
+        spec = parse_request_spec_wordification(spec_file_path)
+        assert spec.root_entities_spec.to_dict() == expected_root_entities_spec
+        assert spec.property_spec.to_dict() == expected_property_spec
+        assert spec.composite_columns_spec.to_dict() == expected_composite_columns_spec
+        assert spec.value_transformation_spec.to_dict() == expected_value_transformation_spec
+        assert spec.concatenation_spec.to_dict() == expected_concatenation_spec
 
         os.remove(spec_file_path)

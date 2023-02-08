@@ -67,3 +67,19 @@ class MyTestCase(unittest.TestCase):
             self.assertGreater(len(lines), 0)
 
         os.remove(file_path)
+
+    def test_main_wordification(self):
+        args = [
+            'compute-wordification',
+            '--ids-spec-path', self.__get_rel_path('test-spec/wordification_ids_spec.json'),
+            '--wordification-config-path', self.__get_rel_path('test-spec/wordification_config.json'),
+            '--target-spec-path', self.__get_rel_path('test-spec/wordification_target_spec.json')
+        ]
+        main(args)
+
+        file_path = glob.glob(self.__get_rel_path('*.txt'))[0]
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            self.assertGreater(len(lines), 0)
+
+        os.remove(file_path)
