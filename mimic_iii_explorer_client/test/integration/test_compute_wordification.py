@@ -1,9 +1,28 @@
-import http
-import unittest
-from datetime import datetime
+import os
+import sys
 
-from generated_client import WordificationConfig, ConcatenationSpec, RootEntitiesSpec, PropertySpec, PropertySpecEntry, RootEntityAndTimeLimit, ApiException, ValueTransformationSpec, ValueTransformationSpecEntry, Transform, CompositeColumnsSpec, CompositeColumnsSpecEntry
-from mimic_iii_explorer_client.client.wordification_api_client import PropositionalizationApiClient
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import http  # noqa: E402
+import unittest  # noqa: E402
+from datetime import datetime  # noqa: E402
+
+from generated_client import (
+    WordificationConfig,
+    ConcatenationSpec,
+    RootEntitiesSpec,
+    PropertySpec,
+    PropertySpecEntry,
+    RootEntityAndTimeLimit,
+    ApiException,
+    ValueTransformationSpec,
+    ValueTransformationSpecEntry,
+    Transform,
+    CompositeColumnsSpec,
+    CompositeColumnsSpecEntry
+)  # noqa: E402
+from mimic_iii_explorer_client.client.wordification_api_client import PropositionalizationApiClient  # noqa: E402
 
 
 class TestComputeWordification(unittest.TestCase):

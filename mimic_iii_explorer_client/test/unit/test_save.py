@@ -1,11 +1,17 @@
-import collections
-import glob
 import os
-import unittest
-from datetime import datetime
+import sys
 
-from generated_client import ClinicalTextResult, ExtractedTarget, WordificationResult
-from mimic_iii_explorer_client.data_saving import save
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import collections  # noqa: E402
+import glob  # noqa: E402
+import os  # noqa: E402
+import unittest  # noqa: E402
+from datetime import datetime  # noqa: E402
+
+from generated_client import ClinicalTextResult, ExtractedTarget, WordificationResult  # noqa: E402
+from mimic_iii_explorer_client.data_saving import save  # noqa: E402
 
 
 class TestSave(unittest.TestCase):
@@ -31,7 +37,11 @@ class TestSave(unittest.TestCase):
 
     def test_save_clinical_text_simple(self):
         clinical_text_result = ClinicalTextResult(1, 'this is a test')
-        extracted_target = ExtractedTarget(1, 0)
+        extracted_target = ExtractedTarget(
+            root_entity_id=1,
+            target_entity_id=2,
+            target_value=0
+        )
 
         save.save_clinical_text(
             [clinical_text_result],

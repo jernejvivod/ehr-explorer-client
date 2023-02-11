@@ -1,6 +1,12 @@
-import unittest
+import os
+import sys
 
-from mimic_iii_explorer_client.text_preprocessing import text_preprocessing
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import unittest  # noqa: E402
+
+from mimic_iii_explorer_client.text_preprocessing import text_preprocessing  # noqa: E402
 
 
 class TestTextPreprocessing(unittest.TestCase):

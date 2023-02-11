@@ -1,13 +1,19 @@
-import json
 import os
-import unittest
+import sys
+
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import json  # noqa: E402
+import os  # noqa: E402
+import unittest  # noqa: E402
 
 from mimic_iii_explorer_client.request_spec_parsing.parsing import (
     parse_request_spec_ids,
     parse_request_spec_target,
     parse_request_spec_clinical_text,
     parse_request_spec_wordification
-)
+)  # noqa: E402
 
 
 class TestRequestSpecParsing(unittest.TestCase):

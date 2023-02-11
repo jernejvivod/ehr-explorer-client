@@ -1,8 +1,14 @@
-import unittest
+import os
+import sys
 
-from generated_client.models.extracted_target import ExtractedTarget
-from generated_client.models.target_extraction_spec import TargetExtractionSpec
-from mimic_iii_explorer_client.client.target_api_client import TargetApiClient
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import unittest  # noqa: E402
+
+from generated_client.models.extracted_target import ExtractedTarget  # noqa: E402
+from generated_client.models.target_extraction_spec import TargetExtractionSpec  # noqa: E402
+from mimic_iii_explorer_client.client.target_api_client import TargetApiClient  # noqa: E402
 
 
 class TestTargetExtraction(unittest.TestCase):
@@ -22,8 +28,8 @@ class TestTargetExtraction(unittest.TestCase):
         res = client.target(target_extraction_spec)
 
         self.assertEqual(2, len(res))
-        self.assertTrue(ExtractedTarget(int(id1), 0) in res)
-        self.assertTrue(ExtractedTarget(int(id2), 1) in res)
+        self.assertTrue(ExtractedTarget(root_entity_id=int(id1), target_entity_id=int(id1), target_value=0) in res)
+        self.assertTrue(ExtractedTarget(root_entity_id=int(id2), target_entity_id=int(id2), target_value=1) in res)
 
     def test_target_extraction_with_invalid_target_spec(self):
         target_extraction_spec = TargetExtractionSpec(
