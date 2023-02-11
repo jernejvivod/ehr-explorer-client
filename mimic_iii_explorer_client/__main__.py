@@ -1,15 +1,14 @@
-import collections
 import os
 import sys
-from typing import List, Optional
 
-from sklearn.model_selection import train_test_split
-
-from generated_client import RootEntityAndTimeLimit
-from mimic_iii_explorer_client.propositionalization.wordification.wordification import compute_wordification
-
+# NOTE: this line should be before any imports from the 'generated_client' package
 sys.path.append(os.path.join(os.path.dirname(__file__), "client/gen"))
 
+import collections  # noqa: E402
+from typing import List, Optional  # noqa: E402
+from sklearn.model_selection import train_test_split  # noqa: E402
+from mimic_iii_explorer_client.propositionalization.wordification.wordification import compute_wordification  # noqa: E402
+from generated_client import RootEntityAndTimeLimit  # noqa: E402
 import argparse  # noqa: E402
 
 from mimic_iii_explorer_client import Tasks, TextOutputFormat  # noqa: E402

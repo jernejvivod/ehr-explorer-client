@@ -1,8 +1,14 @@
-import glob
 import os
-import unittest
+import sys
 
-from mimic_iii_explorer_client.__main__ import main
+# NOTE: this line should be before any imports from the 'generated_client' package
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+
+import glob  # noqa: E402
+import os  # noqa: E402
+import unittest  # noqa: E402
+
+from mimic_iii_explorer_client.__main__ import main  # noqa: E402
 
 
 class MyTestCase(unittest.TestCase):
@@ -17,7 +23,8 @@ class MyTestCase(unittest.TestCase):
             '--ids-spec-path', self.__get_rel_path('test-spec/ids_spec.json'),
             '--limit-ids', '0.01',
             '--clinical-text-spec-path', self.__get_rel_path('test-spec/clinical_text_spec.json'),
-            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json')
+            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json'),
+            '--output-dir', os.path.dirname(__file__)
         ]
         main(args)
 
@@ -36,7 +43,8 @@ class MyTestCase(unittest.TestCase):
             '--limit-ids', '0.01',
             '--test-size', '0.2',
             '--clinical-text-spec-path', self.__get_rel_path('test-spec/clinical_text_spec.json'),
-            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json')
+            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json'),
+            '--output-dir', os.path.dirname(__file__)
         ]
         main(args)
 
@@ -57,7 +65,8 @@ class MyTestCase(unittest.TestCase):
         args = [
             'extract-target-statistics',
             '--ids-spec-path', self.__get_rel_path('test-spec/ids_spec.json'),
-            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json')
+            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json'),
+            '--output-dir', os.path.dirname(__file__)
         ]
         main(args)
 
@@ -73,7 +82,8 @@ class MyTestCase(unittest.TestCase):
             'compute-wordification',
             '--ids-spec-path', self.__get_rel_path('test-spec/wordification_ids_spec.json'),
             '--wordification-config-path', self.__get_rel_path('test-spec/wordification_config.json'),
-            '--target-spec-path', self.__get_rel_path('test-spec/wordification_target_spec.json')
+            '--target-spec-path', self.__get_rel_path('test-spec/wordification_target_spec.json'),
+            '--output-dir', os.path.dirname(__file__)
         ]
         main(args)
 
