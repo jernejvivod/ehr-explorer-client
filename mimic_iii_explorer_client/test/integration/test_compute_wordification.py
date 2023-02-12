@@ -160,10 +160,10 @@ class TestComputeWordification(unittest.TestCase):
     def test_wordification_composite_properties(self):
         self.wordification_config_basic.property_spec.entries[1].composite_property_spec_entries = [
             CompositePropertySpecEntry(
-                'inTime',
-                'dob',
-                ['IcuStaysEntity', 'PatientsEntity'],
-                'ageAtAdmission',
+                property_on_this_entity='inTime',
+                property_on_other_entity='dob',
+                foreign_key_path=['IcuStaysEntity', 'PatientsEntity'],
+                composite_property_name='ageAtAdmission',
                 combiner='DATE_DIFF'
             )
         ]
