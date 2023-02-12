@@ -20,7 +20,8 @@ from generated_client import (
     ValueTransformationSpecEntry,
     Transform,
     CompositeColumnsSpec,
-    CompositeColumnsSpecEntry
+    CompositeColumnsSpecEntry,
+    CompositePropertySpecEntry
 )  # noqa: E402
 from mimic_iii_explorer_client.client.wordification_api_client import PropositionalizationApiClient  # noqa: E402
 
@@ -156,6 +157,31 @@ class TestComputeWordification(unittest.TestCase):
         res = self.client.wordification(self.wordification_config_basic)
         self.assertTrue('composite@test@73_8_2' in res[0].words)
 
-    # TODO implement when functionality implemented in mimic-iii-explorer
     def test_wordification_composite_properties(self):
-        pass
+        self.wordification_config_basic.property_spec.entries[1].composite_property_spec_entries = [
+            CompositePropertySpecEntry(
+                'inTime',
+                'dob',
+                ['IcuStaysEntity', 'PatientsEntity'],
+                'ageAtAdmission',
+                combiner='DATE_DIFF'
+            )
+        ]
+
+        self.wordification_config_basic.value_transformation_spec = ValueTransformationSpec(
+            entries=[
+                ValueTransformationSpecEntry(
+                    entity="IcuStaysEntity",
+                    _property="ageAtAdmission",
+                    transform=Transform(
+                        kind='DATE_DIFF_ROUND',
+                        date_diff_round_type='YEAR'
+                    )
+                )
+            ]
+        )
+
+        res = self.client.wordification(self.wordification_config_basic)
+        self.assertTrue('icustaysentity@ageatadmission@68' in res[2].words)
+        self.assertTrue('icustaysentity@ageatadmission@72' in res[2].words)
+        self.assertTrue('icustaysentity@ageatadmission@73' in res[2].words)

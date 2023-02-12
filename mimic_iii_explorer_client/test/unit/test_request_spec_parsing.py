@@ -116,12 +116,22 @@ class TestRequestSpecParsing(unittest.TestCase):
                 {
                     'entity': 'PatientsEntity',
                     'properties': ['gender'],
-                    'property_for_limit': None
+                    'property_for_limit': None,
+                    'composite_property_spec_entries': None
                 },
                 {
                     'entity': 'IcuStaysEntity',
                     'properties': ['dbSource'],
-                    'property_for_limit': 'outTime'
+                    'property_for_limit': 'outTime',
+                    'composite_property_spec_entries': [
+                        {
+                            'property_on_this_entity': 'inTime',
+                            'property_on_other_entity': 'dob',
+                            'foreign_key_path': ['IcuStaysEntity', 'PatientsEntity'],
+                            'composite_property_name': 'ageAtAdmission',
+                            'combiner': 'DATE_DIFF'
+                        }
+                    ]
                 }
             ],
             'root_entity_and_lime_limit': [
