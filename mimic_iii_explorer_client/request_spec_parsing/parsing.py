@@ -18,7 +18,8 @@ from generated_client import (
     CompositeColumnsSpecEntry,
     ValueTransformationSpec,
     ValueTransformationSpecEntry,
-    Transform
+    Transform,
+    CompositePropertySpecEntry
 )
 
 
@@ -78,7 +79,20 @@ def parse_request_spec_wordification(spec_file_path: str, ids: List[str] = None)
             ids=ids if ids is not None else json_dict['root_entities_spec']['ids'],
         ),
         property_spec=PropertySpec(
-            entries=[PropertySpecEntry(entity=entry['entity'], properties=entry['properties'], property_for_limit=entry['property_for_limit']) for entry in json_dict['property_spec']['entries']],
+            entries=[PropertySpecEntry(
+                entity=entry['entity'],
+                properties=entry['properties'],
+                property_for_limit=entry['property_for_limit'],
+                composite_property_spec_entries=[
+                    CompositePropertySpecEntry(
+                        e['property_on_this_entity'],
+                        e['property_on_other_entity'],
+                        e['foreign_key_path'],
+                        e['composite_property_name'],
+                        e['combiner']
+                    ) for e in entry['composite_property_spec_entries']
+                ] if entry['composite_property_spec_entries'] is not None else None
+            ) for entry in json_dict['property_spec']['entries']],
             root_entity_and_lime_limit=[
                 RootEntityAndTimeLimit(e['root_entity_id'], e['time_lim']) for e in json_dict['property_spec']['root_entity_and_lime_limit']
             ] if json_dict['property_spec']['root_entity_and_lime_limit'] is not None else None
