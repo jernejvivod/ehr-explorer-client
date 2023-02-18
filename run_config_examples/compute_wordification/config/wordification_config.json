@@ -1,0 +1,63 @@
+{
+  "root_entities_spec": {
+    "root_entity": "PatientsEntity",
+    "id_property": "subjectId"
+  },
+  "property_spec": {
+    "entries": [
+      {
+        "entity": "PatientsEntity",
+        "properties": [
+          "gender", "icuStaysEntitys"
+        ]
+      },
+      {
+        "entity": "IcuStaysEntity",
+        "properties": [
+          "dbSource",
+          "firstCareUnit",
+          "lastCareUnit",
+          "firstWardId",
+          "lastWardId",
+          "los"
+        ],
+        "property_for_limit": "outTime",
+        "composite_property_spec_entries": [
+          {
+            "property_on_this_entity": "inTime",
+            "property_on_other_entity": "dob",
+            "foreign_key_path": [
+              "IcuStaysEntity",
+              "PatientsEntity"
+            ],
+            "composite_property_name": "ageAtAdmission",
+            "combiner": "DATE_DIFF"
+          }
+        ]
+      }
+    ]
+  },
+  "value_transformation_spec": {
+    "entries": [
+      {
+        "entity": "IcuStaysEntity",
+        "_property": "ageAtAdmission",
+        "transform": {
+          "kind": "DATE_DIFF_ROUND",
+          "date_diff_round_type": "TEN_YEARS"
+        }
+      },
+      {
+        "entity": "IcuStaysEntity",
+        "_property": "los",
+        "transform": {
+          "kind": "ROUNDING",
+          "rounding_multiple": "1.0"
+        }
+      }
+    ]
+  },
+  "concatenation_spec": {
+    "concatenation_scheme": "ZERO"
+  }
+}
