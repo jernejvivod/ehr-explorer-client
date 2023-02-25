@@ -12,7 +12,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'my-script=mimic_iii_explorer_client.__main__:main',
+            'mimic_iii_explorer_client=mimic_iii_explorer_client.__main__:main',
         ]
     },
 )

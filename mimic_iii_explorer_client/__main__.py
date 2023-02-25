@@ -22,7 +22,10 @@ from mimic_iii_explorer_client.utils.cli_args_types import dir_path, test_size  
 from mimic_iii_explorer_client.utils.utils import limit_ids  # noqa: E402
 
 
-def main(args):
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
     # parse arguments
     parser = argparse.ArgumentParser(prog='mimic-iii-analysis')
     subparsers = parser.add_subparsers(required=True, dest='task', help='Data processing task to run')
@@ -55,7 +58,7 @@ def main(args):
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
 
-    parsed_args = vars(parser.parse_args(args))
+    parsed_args = vars(parser.parse_args(argv[1:]))
 
     # CLINICAL TEXT EXTRACTION
     if parsed_args['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
@@ -167,4 +170,4 @@ def get_target_and_wordification_results(parsed_args: dict, ids: List[str], outp
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(sys.argv))
