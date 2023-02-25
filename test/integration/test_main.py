@@ -2,7 +2,7 @@ import os
 import sys
 
 # NOTE: this line should be before any imports from the 'generated_client' package
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../client/gen"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../mimic_iii_explorer_client/client/gen"))
 
 import glob  # noqa: E402
 import os  # noqa: E402
