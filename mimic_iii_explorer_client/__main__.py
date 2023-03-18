@@ -30,18 +30,40 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='mimic-iii-analysis')
     subparsers = parser.add_subparsers(required=True, dest='task', help='Data processing task to run')
 
+    # add subparsers for tasks
+    _add_subparser_for_clinical_text_extraction(subparsers)
+    _add_subparser_for_wordification(subparsers)
+    _add_subparser_for_target_statistics_extraction(subparsers)
+
+    # run task
+    _run_task(vars(parser.parse_args(argv[1:])))
+
+
+def _run_task(parsed_args):
     # CLINICAL TEXT EXTRACTION
-    clinical_text_extraction_spec_parser = subparsers.add_parser(Tasks.EXTRACT_CLINICAL_TEXT.value)
+    if parsed_args['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
+        logger.info('Running clinical text extraction task.')
+        _run_clinical_text_extraction_task(parsed_args)
+    # WORDIFICATION
+    elif parsed_args['task'] == Tasks.COMPUTE_WORDIFICATION.value:
+        logger.info('Running compute Wordification task.')
+        _run_compute_wordification_task(parsed_args)
+    # TARGET STATISTICS EXTRACTION
+    elif parsed_args['task'] == Tasks.EXTRACT_TARGET_STATISTICS.value:
+        logger.info('Running target statistics extraction task.')
+        _run_target_statistics_extraction_task(parsed_args)
+    else:
+        raise NotImplementedError('Task {0} not implemented'.format(parsed_args['task']))
+
+
+def _add_subparser_for_target_statistics_extraction(subparsers):
+    clinical_text_extraction_spec_parser = subparsers.add_parser(Tasks.EXTRACT_TARGET_STATISTICS.value)
     clinical_text_extraction_spec_parser.add_argument('--ids-spec-path', type=str, required=True)
-    clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
-    clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
-    clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
-    clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
-                                                      choices=[v.value for v in TextOutputFormat], help='Output format')
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
 
-    # WORDIFICATION
+
+def _add_subparser_for_wordification(subparsers):
     wordification_spec_parser = subparsers.add_parser(Tasks.COMPUTE_WORDIFICATION.value)
     wordification_spec_parser.add_argument('--ids-spec-path', type=str, required=True)
     wordification_spec_parser.add_argument('--wordification-config-path', type=str, required=True)
@@ -52,31 +74,20 @@ def main(argv=None):
                                            choices=[v.value for v in TextOutputFormat], help='Output format')
     wordification_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
 
-    # TARGET STATISTICS EXTRACTION
-    clinical_text_extraction_spec_parser = subparsers.add_parser(Tasks.EXTRACT_TARGET_STATISTICS.value)
+
+def _add_subparser_for_clinical_text_extraction(subparsers):
+    clinical_text_extraction_spec_parser = subparsers.add_parser(Tasks.EXTRACT_CLINICAL_TEXT.value)
     clinical_text_extraction_spec_parser.add_argument('--ids-spec-path', type=str, required=True)
+    clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
+    clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
+    clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
+    clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
+                                                      choices=[v.value for v in TextOutputFormat], help='Output format')
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
 
-    parsed_args = vars(parser.parse_args(argv[1:]))
 
-    # CLINICAL TEXT EXTRACTION
-    if parsed_args['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
-        logger.info('Running clinical text extraction task.')
-        run_clinical_text_extraction_task(parsed_args)
-    # WORDIFICATION
-    elif parsed_args['task'] == Tasks.COMPUTE_WORDIFICATION.value:
-        logger.info('Running compute Wordification task.')
-        run_compute_wordification_task(parsed_args)
-    # TARGET STATISTICS EXTRACTION
-    elif parsed_args['task'] == Tasks.EXTRACT_TARGET_STATISTICS.value:
-        logger.info('Running target statistics extraction task.')
-        run_target_statistics_extraction_task(parsed_args)
-    else:
-        raise NotImplementedError('Task {0} not implemented'.format(parsed_args['task']))
-
-
-def run_clinical_text_extraction_task(parsed_args: dict):
+def _run_clinical_text_extraction_task(parsed_args: dict):
     """Run clinical text extraction task with parameters specified by the parsed arguments."""
 
     # extract ids
@@ -88,13 +99,13 @@ def run_clinical_text_extraction_task(parsed_args: dict):
 
     if parsed_args['test_size'] is not None:
         ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=42)
-        get_target_and_text(parsed_args, ids_limited_train, "-train")
-        get_target_and_text(parsed_args, ids_limited_test, "-test")
+        _get_target_and_text(parsed_args, ids_limited_train, "-train")
+        _get_target_and_text(parsed_args, ids_limited_test, "-test")
     else:
-        get_target_and_text(parsed_args, ids_limited, None)
+        _get_target_and_text(parsed_args, ids_limited, None)
 
 
-def run_target_statistics_extraction_task(parsed_args: dict):
+def _run_target_statistics_extraction_task(parsed_args: dict):
     """Run statistics extraction task with parameters specified by the parsed arguments."""
 
     # extract ids
@@ -110,7 +121,7 @@ def run_target_statistics_extraction_task(parsed_args: dict):
     save.save_target_statistics(target_value_counts, parsed_args['output_dir'])
 
 
-def run_compute_wordification_task(parsed_args: dict):
+def _run_compute_wordification_task(parsed_args: dict):
     """Run compute Wordification task with parameters specified by the parsed arguments."""
 
     # extract ids
@@ -122,13 +133,13 @@ def run_compute_wordification_task(parsed_args: dict):
 
     if parsed_args['test_size'] is not None:
         ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=42)
-        get_target_and_wordification_results(parsed_args, ids_limited_train, "-train")
-        get_target_and_wordification_results(parsed_args, ids_limited_test, "-test")
+        _get_target_and_wordification_results(parsed_args, ids_limited_train, "-train")
+        _get_target_and_wordification_results(parsed_args, ids_limited_test, "-test")
     else:
-        get_target_and_wordification_results(parsed_args, ids_limited, None)
+        _get_target_and_wordification_results(parsed_args, ids_limited, None)
 
 
-def get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
+def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
     """Extract target values and clinical text, perform text pre-processing and save results.
 
     :param parsed_args: parameters for the computatations
@@ -147,7 +158,7 @@ def get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: O
     save.save_clinical_text(extracted_texts, extracted_target, parsed_args['output_format'], parsed_args['output_dir'], output_file_suffix, preprocessing_steps=None)
 
 
-def get_target_and_wordification_results(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
+def _get_target_and_wordification_results(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
     """Extract target values, compute Wordification, and save results.
 
     :param parsed_args: parameters for the computatations
