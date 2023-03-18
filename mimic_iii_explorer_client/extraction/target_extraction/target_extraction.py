@@ -12,4 +12,5 @@ def extract_target(target_extraction_spec: TargetExtractionSpec) -> List[Extract
     :return: root entity ids and encoded computed target values
     """
     logger.info('Requesting mimic-iii-explorer to extract the target values for the specified ids')
+
     return TargetApiClient().target(target_extraction_spec)
