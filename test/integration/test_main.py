@@ -97,3 +97,31 @@ class TestMain(unittest.TestCase):
             self.assertGreater(len(lines), 0)
 
         os.remove(file_path)
+
+    def test_main_extract_clinical_text_tt_split_seeded(self):
+        argv = [
+            __file__,
+            '--seed', '1',
+            'extract-clinical-text',
+            '--ids-spec-path', self.__get_rel_path('test-spec/ids_spec.json'),
+            '--limit-ids', '0.01',
+            '--test-size', '0.2',
+            '--clinical-text-spec-path', self.__get_rel_path('test-spec/clinical_text_spec.json'),
+            '--target-spec-path', self.__get_rel_path('test-spec/target_spec.json'),
+            '--output-dir', os.path.dirname(__file__)
+        ]
+        main(argv)
+        main(argv)
+
+        file_paths_train = glob.glob(self.__get_rel_path('*-train.txt'))
+        file_paths_test = glob.glob(self.__get_rel_path('*-test.txt'))
+
+        self._assert_files_equal(file_paths_train[0], file_paths_train[1])
+        self._assert_files_equal(file_paths_test[0], file_paths_test[1])
+
+        for file_path in file_paths_train + file_paths_test:
+            os.remove(file_path)
+
+    def _assert_files_equal(self, file_path1: str, file_path2: str) -> None:
+        with open(file_path1, 'r') as f1, open(file_path2, 'r') as f2:
+            self.assertTrue(f1.readlines() == f2.readlines())

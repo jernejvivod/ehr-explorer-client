@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 
 # NOTE: this line should be before any imports from the 'generated_client' package
@@ -28,6 +29,7 @@ def main(argv=None):
 
     # parse arguments
     parser = argparse.ArgumentParser(prog='mimic-iii-analysis')
+    _add_common_parser_args(parser)
     subparsers = parser.add_subparsers(required=True, dest='task', help='Data processing task to run')
 
     # add subparsers for tasks
@@ -40,6 +42,8 @@ def main(argv=None):
 
 
 def _run_task(parsed_args):
+    random.seed(parsed_args['seed'])
+
     # CLINICAL TEXT EXTRACTION
     if parsed_args['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
         logger.info('Running clinical text extraction task.')
@@ -54,6 +58,10 @@ def _run_task(parsed_args):
         _run_target_statistics_extraction_task(parsed_args)
     else:
         raise NotImplementedError('Task {0} not implemented'.format(parsed_args['task']))
+
+
+def _add_common_parser_args(parser):
+    parser.add_argument('--seed', type=int, default=None, help='Seed with which to initialize random number generation')
 
 
 def _add_subparser_for_target_statistics_extraction(subparsers):
