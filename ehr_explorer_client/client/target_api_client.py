@@ -1,8 +1,8 @@
 import generated_client
 from generated_client.api import target_api
 from generated_client.models.target_extraction_spec import TargetExtractionSpec
-from mimic_iii_explorer_client.client import logger
-from mimic_iii_explorer_client.client.abstract_api_client import AbstractApiClient
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
 class TargetApiClient(AbstractApiClient):

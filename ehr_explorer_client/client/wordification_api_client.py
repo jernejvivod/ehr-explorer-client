@@ -1,8 +1,8 @@
 import generated_client
 from generated_client import WordificationConfig
 from generated_client.api import propositionalization_api
-from mimic_iii_explorer_client.client.abstract_api_client import AbstractApiClient
-from mimic_iii_explorer_client.propositionalization import logger
+from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
+from ehr_explorer_client.propositionalization import logger
 
 
 class PropositionalizationApiClient(AbstractApiClient):

@@ -2,11 +2,11 @@ import os
 import sys
 
 # NOTE: this line should be before any imports from the 'generated_client' package
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../mimic_iii_explorer_client/client/gen"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ehr_explorer_client/client/gen"))
 
 import unittest  # noqa: E402
 
-from mimic_iii_explorer_client.text_preprocessing import text_preprocessing  # noqa: E402
+from ehr_explorer_client.text_preprocessing import text_preprocessing  # noqa: E402
 
 
 class TestTextPreprocessing(unittest.TestCase):

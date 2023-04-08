@@ -2,13 +2,13 @@ import os
 import sys
 
 # NOTE: this line should be before any imports from the 'generated_client' package
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../mimic_iii_explorer_client/client/gen"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ehr_explorer_client/client/gen"))
 
 import json  # noqa: E402
 import os  # noqa: E402
 import unittest  # noqa: E402
 
-from mimic_iii_explorer_client.request_spec_parsing.parsing import (
+from ehr_explorer_client.request_spec_parsing.parsing import (
     parse_request_spec_ids,
     parse_request_spec_target,
     parse_request_spec_clinical_text,
