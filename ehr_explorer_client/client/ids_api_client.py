@@ -3,8 +3,8 @@ from typing import List
 import generated_client
 from generated_client.api import ids_api
 from generated_client.models.id_retrieval_spec import IdRetrievalSpec
-from mimic_iii_explorer_client.client import logger
-from mimic_iii_explorer_client.client.abstract_api_client import AbstractApiClient
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
 class IdsApiClient(AbstractApiClient):

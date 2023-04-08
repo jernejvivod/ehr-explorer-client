@@ -1,8 +1,8 @@
 import generated_client
 from generated_client.api import clinical_text_api
 from generated_client.models.clinical_text_config import ClinicalTextConfig
-from mimic_iii_explorer_client.client import logger
-from mimic_iii_explorer_client.client.abstract_api_client import AbstractApiClient
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
 class ClinicalTextApiClient(AbstractApiClient):

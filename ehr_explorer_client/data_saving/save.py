@@ -5,8 +5,8 @@ from collections import Counter
 from typing import List, Collection, Optional
 
 from generated_client import ClinicalTextResult, ExtractedTarget, WordificationResult
-from mimic_iii_explorer_client import TextOutputFormat
-from mimic_iii_explorer_client.text_preprocessing.text_preprocessing import preprocess
+from ehr_explorer_client import TextOutputFormat
+from ehr_explorer_client.text_preprocessing.text_preprocessing import preprocess
 
 
 def save_clinical_text(extracted_texts: List[ClinicalTextResult],

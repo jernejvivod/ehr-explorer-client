@@ -1,7 +1,7 @@
 import random
 from typing import List, Union
 
-from mimic_iii_explorer_client.utils import logger
+from ehr_explorer_client.utils import logger
 
 
 def limit_ids(ids: List[str], keep: Union[float, int] = 1.0):

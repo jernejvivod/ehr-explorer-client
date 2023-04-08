@@ -8,19 +8,19 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "client/gen"))
 import collections  # noqa: E402
 from typing import List, Optional  # noqa: E402
 from sklearn.model_selection import train_test_split  # noqa: E402
-from mimic_iii_explorer_client.propositionalization.wordification.wordification import compute_wordification  # noqa: E402
+from ehr_explorer_client.propositionalization.wordification.wordification import compute_wordification  # noqa: E402
 from generated_client import RootEntityAndTimeLimit  # noqa: E402
 import argparse  # noqa: E402
 
-from mimic_iii_explorer_client import Tasks, TextOutputFormat  # noqa: E402
-from mimic_iii_explorer_client import logger  # noqa: E402
-from mimic_iii_explorer_client.data_saving import save  # noqa: E402
-from mimic_iii_explorer_client.extraction.clinical_text_extraction.clinical_text_extraction import extract_clinical_text  # noqa: E402
-from mimic_iii_explorer_client.extraction.id_retrieval.id_retrieval import retrieve_ids  # noqa: E402
-from mimic_iii_explorer_client.extraction.target_extraction.target_extraction import extract_target  # noqa: E402
-from mimic_iii_explorer_client.request_spec_parsing.parsing import parse_request_spec_clinical_text, parse_request_spec_ids, parse_request_spec_target, parse_request_spec_wordification  # noqa: E402
-from mimic_iii_explorer_client.utils.cli_args_types import dir_path, test_size  # noqa: E402
-from mimic_iii_explorer_client.utils.utils import limit_ids  # noqa: E402
+from ehr_explorer_client import Tasks, TextOutputFormat  # noqa: E402
+from ehr_explorer_client import logger  # noqa: E402
+from ehr_explorer_client.data_saving import save  # noqa: E402
+from ehr_explorer_client.extraction.clinical_text_extraction.clinical_text_extraction import extract_clinical_text  # noqa: E402
+from ehr_explorer_client.extraction.id_retrieval.id_retrieval import retrieve_ids  # noqa: E402
+from ehr_explorer_client.extraction.target_extraction.target_extraction import extract_target  # noqa: E402
+from ehr_explorer_client.request_spec_parsing.parsing import parse_request_spec_clinical_text, parse_request_spec_ids, parse_request_spec_target, parse_request_spec_wordification  # noqa: E402
+from ehr_explorer_client.utils.cli_args_types import dir_path, test_size  # noqa: E402
+from ehr_explorer_client.utils.utils import limit_ids  # noqa: E402
 
 
 def main(argv=None):

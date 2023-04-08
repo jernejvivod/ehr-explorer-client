@@ -12,7 +12,7 @@ target_spec_path="$script_path/config/target_spec.json"
 output_dir="$script_path/results"
 
 # run the command
-python3 "$script_path/../../mimic_iii_explorer_client" \
+python3 "$script_path/../../ehr_explorer_client" \
     compute-wordification \
     --ids-spec-path "$ids_spec_path" \
     --wordification-config-path "$wordification_config_path" \

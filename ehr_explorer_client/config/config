@@ -1,4 +1,4 @@
-[mimic-iii-explorer]
+[ehr-explorer]
 core-api-url=http://localhost:8080/core-0.1.0-SNAPSHOT/api/v1
 id-retrieval-path=ids
 clinical-text-extraction-path=clinical-text/extract

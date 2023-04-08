@@ -3,7 +3,7 @@ import os
 from abc import ABC
 
 import generated_client
-from mimic_iii_explorer_client import CONFIG_MEXPLORER_CORE_SECTION, CONFIG_MEXPLORER_CORE_URL_KEY, CONFIG_PATH
+from ehr_explorer_client import CONFIG_MEXPLORER_CORE_SECTION, CONFIG_MEXPLORER_CORE_URL_KEY, CONFIG_PATH
 
 
 class AbstractApiClient(ABC):

@@ -1,1 +1,1 @@
-# mimic-iii-explorer-client
+# ehr-explorer-client
