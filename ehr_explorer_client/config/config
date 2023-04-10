@@ -1,5 +1,6 @@
 [ehr-explorer]
-core-api-url=http://localhost:8080/core-0.1.0-SNAPSHOT/api/v1
+core-api-url=http://localhost:8080/ehr-explorer-core/api/v1
+mimic-iii-target-extraction-api-url=http://localhost:8080/ehr-explorer-mimic-iii-target-extraction/api/v1
 id-retrieval-path=ids
 clinical-text-extraction-path=clinical-text/extract
 target-extraction-path=target

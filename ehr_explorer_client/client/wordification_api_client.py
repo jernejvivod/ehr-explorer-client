@@ -1,11 +1,11 @@
 import generated_client
+from ehr_explorer_client.client.abstract_core_api_client import AbstractCoreApiClient
+from ehr_explorer_client.propositionalization import logger
 from generated_client import WordificationConfig
 from generated_client.api import propositionalization_api
-from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
-from ehr_explorer_client.propositionalization import logger
 
 
-class PropositionalizationApiClient(AbstractApiClient):
+class PropositionalizationApiClient(AbstractCoreApiClient):
     def wordification(self, wordification_config: WordificationConfig):
         """Retrieve extracted clinical texts.
 

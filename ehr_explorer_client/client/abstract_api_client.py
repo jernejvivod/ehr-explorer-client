@@ -1,9 +1,9 @@
 import configparser
 import os
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import generated_client
-from ehr_explorer_client import CONFIG_MEXPLORER_CORE_SECTION, CONFIG_MEXPLORER_CORE_URL_KEY, CONFIG_PATH
+from ehr_explorer_client import CONFIG_EHR_EXPLORER_CORE_SECTION, CONFIG_PATH
 
 
 class AbstractApiClient(ABC):
@@ -19,5 +19,9 @@ class AbstractApiClient(ABC):
 
         # base API path
         self.client_config = generated_client.Configuration(
-            host=config[CONFIG_MEXPLORER_CORE_SECTION][CONFIG_MEXPLORER_CORE_URL_KEY],
+            host=config[CONFIG_EHR_EXPLORER_CORE_SECTION][self.get_config_url_key()],
         )
+
+    @abstractmethod
+    def get_config_url_key(self):
+        pass
