@@ -1,13 +1,13 @@
 from typing import List
 
 import generated_client
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_core_api_client import AbstractCoreApiClient
 from generated_client.api import ids_api
 from generated_client.models.id_retrieval_spec import IdRetrievalSpec
-from ehr_explorer_client.client import logger
-from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
-class IdsApiClient(AbstractApiClient):
+class IdsApiClient(AbstractCoreApiClient):
     def ids(self, id_retrieval_spec: IdRetrievalSpec) -> List['str']:
         """Retrieve root entity ids.
 

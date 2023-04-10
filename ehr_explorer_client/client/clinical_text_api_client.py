@@ -1,11 +1,11 @@
 import generated_client
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_core_api_client import AbstractCoreApiClient
 from generated_client.api import clinical_text_api
 from generated_client.models.clinical_text_config import ClinicalTextConfig
-from ehr_explorer_client.client import logger
-from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
-class ClinicalTextApiClient(AbstractApiClient):
+class ClinicalTextApiClient(AbstractCoreApiClient):
     def clinical_text(self, clinical_text_config: ClinicalTextConfig):
         """Retrieve extracted clinical texts.
 

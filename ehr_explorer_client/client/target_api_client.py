@@ -1,11 +1,11 @@
 import generated_client
+from ehr_explorer_client.client import logger
+from ehr_explorer_client.client.abstract_target_extraction_api_client import AbstractTargetExtractionApiClient
 from generated_client.api import target_api
 from generated_client.models.target_extraction_spec import TargetExtractionSpec
-from ehr_explorer_client.client import logger
-from ehr_explorer_client.client.abstract_api_client import AbstractApiClient
 
 
-class TargetApiClient(AbstractApiClient):
+class TargetApiClient(AbstractTargetExtractionApiClient):
     def target(self, target_extraction_spec: TargetExtractionSpec):
         """Retrieve target values.
 
