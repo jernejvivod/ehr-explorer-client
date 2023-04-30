@@ -155,8 +155,5 @@ cython_debug/
 # IDE
 .idea
 
-# Generated client
-gen/
-
 # OpenApi Generator JAR
 openapi-generator-cli-4.3.1.jar
