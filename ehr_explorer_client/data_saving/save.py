@@ -33,7 +33,7 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
                 text = preprocess(text, preprocessing_steps)
 
                 # write to fast-text format
-                target_val = [t for t in extracted_target if t.root_entity_id == extracted_text.root_entity_id]
+                target_val = [t for t in extracted_target if t.target_entity_id == extracted_text.root_entity_id]
                 if len(target_val) == 0:
                     raise ValueError('Target value for root entity with id={0} not found'.format(extracted_text.root_entity_id))
                 f.write(text)

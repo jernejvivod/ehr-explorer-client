@@ -12,11 +12,16 @@ target_spec_path="$script_path/config/target_spec.json"
 output_dir="$script_path/results"
 
 # run the command
-python3 "$script_path/../../ehr_explorer_client" \
-    compute-wordification \
-    --ids-spec-path "$ids_spec_path" \
-    --wordification-config-path "$wordification_config_path" \
-    --target-spec-path "$target_spec_path" \
-    --limit-ids 0.01 \
-    --test-size 0.2 \
-    --output-dir "$output_dir"
+args=("$script_path/../../ehr_explorer_client"
+  compute-wordification
+  --ids-spec-path "$ids_spec_path"
+  --wordification-config-path "$wordification_config_path"
+  --target-spec-path "$target_spec_path"
+  --limit-ids 0.01
+  --test-size 0.2
+  --output-dir "$output_dir"
+)
+
+echo "${args[@]}"
+
+python3 "${args[@]}"

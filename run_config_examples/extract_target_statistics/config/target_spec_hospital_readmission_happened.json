@@ -1,3 +1,4 @@
 {
-  "target_type": "HOSPITAL_READMISSION_HAPPENED"
+  "target_type": "HOSPITAL_READMISSION_HAPPENED",
+  "age_lim": 18
 }

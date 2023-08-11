@@ -20,7 +20,7 @@ from ehr_explorer_client.extraction.id_retrieval.id_retrieval import retrieve_id
 from ehr_explorer_client.extraction.target_extraction.target_extraction import extract_target  # noqa: E402
 from ehr_explorer_client.request_spec_parsing.parsing import parse_request_spec_clinical_text, parse_request_spec_ids, parse_request_spec_target, parse_request_spec_wordification  # noqa: E402
 from ehr_explorer_client.utils.cli_args_types import dir_path, test_size  # noqa: E402
-from ehr_explorer_client.utils.utils import limit_ids  # noqa: E402
+from ehr_explorer_client.utils.utils import limit_ids, undersample_extracted_target  # noqa: E402
 
 
 def main(argv=None):
@@ -89,6 +89,7 @@ def _add_subparser_for_clinical_text_extraction(subparsers):
     clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
+    clinical_text_extraction_spec_parser.add_argument('--undersampling', type=float, default=0.5, help='Undersampling goal ratio of minority class examples')
     clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
     clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                                       choices=[v.value for v in TextOutputFormat], help='Output format')
@@ -107,10 +108,10 @@ def _run_clinical_text_extraction_task(parsed_args: dict):
 
     if parsed_args['test_size'] is not None:
         ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=42)
-        _get_target_and_text(parsed_args, ids_limited_train, "-train")
+        _get_target_and_text(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'])
         _get_target_and_text(parsed_args, ids_limited_test, "-test")
     else:
-        _get_target_and_text(parsed_args, ids_limited, None)
+        _get_target_and_text(parsed_args, ids_limited, None, None)
 
 
 def _run_target_statistics_extraction_task(parsed_args: dict):
@@ -147,19 +148,24 @@ def _run_compute_wordification_task(parsed_args: dict):
         _get_target_and_wordification_results(parsed_args, ids_limited, None)
 
 
-def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
+def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str], undersampling: Optional[float] = None):
     """Extract target values and clinical text, perform text pre-processing and save results.
 
     :param parsed_args: parameters for the computatations
     :param ids: entity IDs
     :param output_file_suffix: suffix to add to the resulting file name.
+    :param undersampling: if specified, perform undersampling to achieve specified ratio of minority class
     """
     # extract target values
     target_extraction_spec = parse_request_spec_target(parsed_args['target_spec_path'], ids)
     extracted_target = extract_target(target_extraction_spec)
 
+    # perform undersampling
+    if undersampling is not None:
+        extracted_target = undersample_extracted_target(extracted_target, undersampling)
+
     # extract clinical text
-    clinical_text_config = parse_request_spec_clinical_text(parsed_args['clinical_text_spec_path'], list(map(lambda x: x.root_entity_id, extracted_target)))
+    clinical_text_config = parse_request_spec_clinical_text(parsed_args['clinical_text_spec_path'], list(map(lambda x: x.target_entity_id, extracted_target)))
     extracted_texts = extract_clinical_text(clinical_text_config)
 
     # pre-process and save clinical text

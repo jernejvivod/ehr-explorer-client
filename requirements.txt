@@ -20,3 +20,5 @@ setuptools~=65.5.1
 six~=1.16.0
 python-dateutil~=2.8.2
 scikit-learn~=1.2.1
+numpy~=1.24.2
+imblearn~=0.0
