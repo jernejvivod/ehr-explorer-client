@@ -45,6 +45,9 @@ def parse_request_spec_target(spec_file_path: str, ids: List[str] = None) -> Tar
     return TargetExtractionSpec(
         target_type=json_dict['target_type'],
         ids=json_dict['ids'] if ids is None else ids,
+        age_lim=json_dict['age_lim'],
+        max_days_interval_positive=json_dict['max_days_interval_positive'],
+        max_days_death_after_last_positive=json_dict['max_days_death_after_last_positive']
     )
 
 
