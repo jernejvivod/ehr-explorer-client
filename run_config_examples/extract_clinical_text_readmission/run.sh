@@ -13,11 +13,12 @@ output_dir="$script_path/results"
 
 # run the command
 args=("$script_path/../../ehr_explorer_client"
+  --seed 42
   extract-clinical-text
   --ids-spec-path "$ids_spec_path"
   --clinical-text-spec-path "$clinical_text_spec_path"
   --target-spec-path "$target_spec_path"
-  --limit-ids 0.01
+  --limit-ids 0.5
   --undersampling 1.0
   --test-size 0.2
   --output-dir "$output_dir"
