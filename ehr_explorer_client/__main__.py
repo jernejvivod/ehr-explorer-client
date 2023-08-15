@@ -2,6 +2,8 @@ import os
 import random
 import sys
 
+import numpy as np
+
 # NOTE: this line should be before any imports from the 'generated_client' package
 sys.path.append(os.path.join(os.path.dirname(__file__), "client/gen"))
 
@@ -43,6 +45,7 @@ def main(argv=None):
 
 def _run_task(parsed_args):
     random.seed(parsed_args['seed'])
+    np.random.seed(parsed_args['seed'])
 
     # CLINICAL TEXT EXTRACTION
     if parsed_args['task'] == Tasks.EXTRACT_CLINICAL_TEXT.value:
@@ -89,7 +92,7 @@ def _add_subparser_for_clinical_text_extraction(subparsers):
     clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
-    clinical_text_extraction_spec_parser.add_argument('--undersampling', type=float, default=0.5, help='Undersampling goal ratio of minority class examples')
+    clinical_text_extraction_spec_parser.add_argument('--undersampling', type=float, help='Undersampling goal ratio of minority class examples')
     clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
     clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                                       choices=[v.value for v in TextOutputFormat], help='Output format')
@@ -107,7 +110,7 @@ def _run_clinical_text_extraction_task(parsed_args: dict):
     ids_limited = limit_ids(retrieved_ids, parsed_args['limit_ids'])
 
     if parsed_args['test_size'] is not None:
-        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=42)
+        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
         _get_target_and_text(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'])
         _get_target_and_text(parsed_args, ids_limited_test, "-test")
     else:
@@ -141,7 +144,7 @@ def _run_compute_wordification_task(parsed_args: dict):
     ids_limited = limit_ids(retrieved_ids, parsed_args['limit_ids'])
 
     if parsed_args['test_size'] is not None:
-        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=42)
+        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
         _get_target_and_wordification_results(parsed_args, ids_limited_train, "-train")
         _get_target_and_wordification_results(parsed_args, ids_limited_test, "-test")
     else:
@@ -162,7 +165,7 @@ def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: 
 
     # perform undersampling
     if undersampling is not None:
-        extracted_target = undersample_extracted_target(extracted_target, undersampling)
+        extracted_target = undersample_extracted_target(extracted_target, undersampling, seed=parsed_args['seed'])
 
     # extract clinical text
     clinical_text_config = parse_request_spec_clinical_text(parsed_args['clinical_text_spec_path'], list(map(lambda x: x.target_entity_id, extracted_target)))

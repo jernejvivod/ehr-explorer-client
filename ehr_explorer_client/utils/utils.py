@@ -1,5 +1,5 @@
 import random
-from typing import List, Union
+from typing import List, Union, Optional
 
 import numpy as np
 from imblearn.under_sampling import RandomUnderSampler
@@ -39,14 +39,15 @@ def limit_ids(ids: List[str], keep: Union[float, int] = 1.0):
         raise ValueError('Invalid type for argument \'portion_keep\' (can be either int or float)')
 
 
-def undersample_extracted_target(extracted_target: List[ExtractedTarget], ratio: float):
+def undersample_extracted_target(extracted_target: List[ExtractedTarget], ratio: float, seed: Optional[int] = None) -> List[ExtractedTarget]:
     """Perform undersampling of examples based on target value.
 
     :param extracted_target: list of extracted target values
     :param ratio: target ratio of minority class to majority class
+    :param seed: value for random_state parameter of RandomUnderSampler
     """
 
-    under_sampler = RandomUnderSampler(sampling_strategy=ratio, random_state=42)
+    under_sampler = RandomUnderSampler(sampling_strategy=ratio, random_state=seed)
 
     # need to provide nested indices
     idxs_resampled_nested, _ = under_sampler.fit_resample(
