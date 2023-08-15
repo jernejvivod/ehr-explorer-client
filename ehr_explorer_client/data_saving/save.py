@@ -4,6 +4,8 @@ import time
 from collections import Counter
 from typing import List, Collection, Optional
 
+from tqdm import tqdm
+
 from generated_client import ClinicalTextResult, ExtractedTarget, WordificationResult
 from ehr_explorer_client import TextOutputFormat
 from ehr_explorer_client.text_preprocessing.text_preprocessing import preprocess
@@ -27,7 +29,7 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
     if output_format == TextOutputFormat.FAST_TEXT.value:
         _RE_COMBINE_WHITESPACE = re.compile(r"\s+")
         with open(os.path.join(output_dir, 'data-' + time.strftime("%Y%m%d-%H%M%S") + (output_file_suffix if output_file_suffix else "") + '.txt'), 'w') as f:
-            for extracted_text in extracted_texts:
+            for extracted_text in tqdm(extracted_texts, desc='Performing text preprocessing', unit=' examples'):
                 # pre-process
                 text = _RE_COMBINE_WHITESPACE.sub(' ', extracted_text.text.replace('\n', ' ')).strip()
                 text = preprocess(text, preprocessing_steps)
@@ -38,7 +40,9 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
                     raise ValueError('Target value for root entity with id={0} not found'.format(extracted_text.root_entity_id))
                 f.write(text)
                 f.write(' ')
-                f.write('__label__{0}\n'.format(target_val[0].target_value))
+
+                # labels > 0 are considered positive (the correspond to different kinds of positive examples)
+                f.write('__label__{0}\n'.format(1 if target_val[0].target_value > 0 else 0))
     else:
         raise ValueError('Format \'{0}\' not supported'.format(output_format))
 
