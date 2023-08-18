@@ -73,6 +73,10 @@ class TestRequestSpecParsing(unittest.TestCase):
         expected_text_property_name = 'text'
         expected_clinical_text_entity_id_property_name = 'id'
         expected_clinical_text_date_time_properties_names = ['timestamp']
+        expected_root_entity_datetime_property_for_cutoff_spec = {
+            'property_for_upper_limit': 'dischtime',
+            'property_for_lower_limit': 'admitTime'
+        }
         expected_root_entities_spec = {
             'root_entity': 'AdmissionsEntity',
             'id_property': 'hadmId',
@@ -88,6 +92,7 @@ class TestRequestSpecParsing(unittest.TestCase):
                 'text_property_name': expected_text_property_name,
                 'clinical_text_entity_id_property_name': expected_clinical_text_entity_id_property_name,
                 'clinical_text_date_time_properties_names': expected_clinical_text_date_time_properties_names,
+                'root_entity_datetime_property_for_cutoff_spec': expected_root_entity_datetime_property_for_cutoff_spec,
                 'root_entities_spec': expected_root_entities_spec,
                 'clinical_text_extraction_duration_spec': expected_clinical_text_extraction_duration_spec
             }, f)
@@ -97,6 +102,7 @@ class TestRequestSpecParsing(unittest.TestCase):
         assert spec.text_property_name == expected_text_property_name
         assert spec.clinical_text_entity_id_property_name == expected_clinical_text_entity_id_property_name
         assert spec.clinical_text_date_time_properties_names == expected_clinical_text_date_time_properties_names
+        assert spec.root_entity_datetime_property_for_cutoff_spec.to_dict() == expected_root_entity_datetime_property_for_cutoff_spec
         assert spec.root_entities_spec.to_dict() == expected_root_entities_spec
         assert spec.clinical_text_extraction_duration_spec.to_dict() == expected_clinical_text_extraction_duration_spec
 

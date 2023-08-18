@@ -18,7 +18,7 @@ args=("$script_path/../../ehr_explorer_client"
   --ids-spec-path "$ids_spec_path"
   --clinical-text-spec-path "$clinical_text_spec_path"
   --target-spec-path "$target_spec_path"
-  --limit-ids 0.1
+  --limit-ids 0.5
   --undersampling 1.0
   --test-size 0.2
   --output-dir "$output_dir"

@@ -13,4 +13,5 @@ def extract_clinical_text(clinical_text_config: ClinicalTextConfig) -> List[Clin
     """
     logger.info('Requesting ehr-explorer to extract the clinical texts')
 
+    # TODO do batched retrieval
     return ClinicalTextApiClient().clinical_text(clinical_text_config)

@@ -50,6 +50,7 @@ from generated_client.models.property_spec_entry import PropertySpecEntry
 from generated_client.models.property_stats import PropertyStats
 from generated_client.models.root_entities_spec import RootEntitiesSpec
 from generated_client.models.root_entity_and_time_limit import RootEntityAndTimeLimit
+from generated_client.models.root_entity_datetime_property_for_cutoff_spec import RootEntityDatetimePropertyForCutoffSpec
 from generated_client.models.target_extraction_spec import TargetExtractionSpec
 from generated_client.models.transform import Transform
 from generated_client.models.value_transformation_spec import ValueTransformationSpec

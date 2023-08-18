@@ -92,6 +92,7 @@ Class | Method | HTTP request | Description
  - [PropertyStats](generated_client/docs/PropertyStats.md)
  - [RootEntitiesSpec](generated_client/docs/RootEntitiesSpec.md)
  - [RootEntityAndTimeLimit](generated_client/docs/RootEntityAndTimeLimit.md)
+ - [RootEntityDatetimePropertyForCutoffSpec](generated_client/docs/RootEntityDatetimePropertyForCutoffSpec.md)
  - [TargetExtractionSpec](generated_client/docs/TargetExtractionSpec.md)
  - [Transform](generated_client/docs/Transform.md)
  - [ValueTransformationSpec](generated_client/docs/ValueTransformationSpec.md)
