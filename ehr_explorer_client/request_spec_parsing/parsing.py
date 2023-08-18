@@ -19,7 +19,8 @@ from generated_client import (
     ValueTransformationSpec,
     ValueTransformationSpecEntry,
     Transform,
-    CompositePropertySpecEntry
+    CompositePropertySpecEntry,
+    RootEntityDatetimePropertyForCutoffSpec
 )
 
 
@@ -59,7 +60,10 @@ def parse_request_spec_clinical_text(spec_file_path: str, ids: List[str] = None)
         text_property_name=json_dict['text_property_name'],
         clinical_text_entity_id_property_name=json_dict['clinical_text_entity_id_property_name'],
         clinical_text_date_time_properties_names=json_dict['clinical_text_date_time_properties_names'],
-        root_entity_datetime_property_for_cutoff=json_dict['root_entity_datetime_property_for_cutoff'],
+        root_entity_datetime_property_for_cutoff_spec=RootEntityDatetimePropertyForCutoffSpec(
+            property_for_upper_limit=json_dict['root_entity_datetime_property_for_cutoff_spec']['property_for_upper_limit'],
+            property_for_lower_limit=json_dict['root_entity_datetime_property_for_cutoff_spec']['property_for_lower_limit']
+        ) if json_dict['root_entity_datetime_property_for_cutoff_spec'] is not None else None,
         root_entities_spec=RootEntitiesSpec(
             root_entity=json_dict['root_entities_spec']['root_entity'],
             id_property=json_dict['root_entities_spec']['id_property'],

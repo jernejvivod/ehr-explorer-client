@@ -38,7 +38,7 @@ class ClinicalTextConfig(object):
         'text_property_name': 'str',
         'clinical_text_entity_id_property_name': 'str',
         'clinical_text_date_time_properties_names': 'list[str]',
-        'root_entity_datetime_property_for_cutoff': 'str',
+        'root_entity_datetime_property_for_cutoff_spec': 'RootEntityDatetimePropertyForCutoffSpec',
         'root_entities_spec': 'RootEntitiesSpec',
         'clinical_text_extraction_duration_spec': 'ClinicalTextExtractionDurationSpec'
     }
@@ -48,12 +48,12 @@ class ClinicalTextConfig(object):
         'text_property_name': 'textPropertyName',
         'clinical_text_entity_id_property_name': 'clinicalTextEntityIdPropertyName',
         'clinical_text_date_time_properties_names': 'clinicalTextDateTimePropertiesNames',
-        'root_entity_datetime_property_for_cutoff': 'rootEntityDatetimePropertyForCutoff',
+        'root_entity_datetime_property_for_cutoff_spec': 'rootEntityDatetimePropertyForCutoffSpec',
         'root_entities_spec': 'rootEntitiesSpec',
         'clinical_text_extraction_duration_spec': 'clinicalTextExtractionDurationSpec'
     }
 
-    def __init__(self, foreign_key_path=None, text_property_name=None, clinical_text_entity_id_property_name=None, clinical_text_date_time_properties_names=None, root_entity_datetime_property_for_cutoff=None, root_entities_spec=None, clinical_text_extraction_duration_spec=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, foreign_key_path=None, text_property_name=None, clinical_text_entity_id_property_name=None, clinical_text_date_time_properties_names=None, root_entity_datetime_property_for_cutoff_spec=None, root_entities_spec=None, clinical_text_extraction_duration_spec=None, local_vars_configuration=None):  # noqa: E501
         """ClinicalTextConfig - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration()
@@ -63,7 +63,7 @@ class ClinicalTextConfig(object):
         self._text_property_name = None
         self._clinical_text_entity_id_property_name = None
         self._clinical_text_date_time_properties_names = None
-        self._root_entity_datetime_property_for_cutoff = None
+        self._root_entity_datetime_property_for_cutoff_spec = None
         self._root_entities_spec = None
         self._clinical_text_extraction_duration_spec = None
         self.discriminator = None
@@ -74,8 +74,8 @@ class ClinicalTextConfig(object):
             self.clinical_text_entity_id_property_name = clinical_text_entity_id_property_name
         if clinical_text_date_time_properties_names is not None:
             self.clinical_text_date_time_properties_names = clinical_text_date_time_properties_names
-        if root_entity_datetime_property_for_cutoff is not None:
-            self.root_entity_datetime_property_for_cutoff = root_entity_datetime_property_for_cutoff
+        if root_entity_datetime_property_for_cutoff_spec is not None:
+            self.root_entity_datetime_property_for_cutoff_spec = root_entity_datetime_property_for_cutoff_spec
         self.root_entities_spec = root_entities_spec
         if clinical_text_extraction_duration_spec is not None:
             self.clinical_text_extraction_duration_spec = clinical_text_extraction_duration_spec
@@ -169,25 +169,25 @@ class ClinicalTextConfig(object):
         self._clinical_text_date_time_properties_names = clinical_text_date_time_properties_names
 
     @property
-    def root_entity_datetime_property_for_cutoff(self):
-        """Gets the root_entity_datetime_property_for_cutoff of this ClinicalTextConfig.  # noqa: E501
+    def root_entity_datetime_property_for_cutoff_spec(self):
+        """Gets the root_entity_datetime_property_for_cutoff_spec of this ClinicalTextConfig.  # noqa: E501
 
 
-        :return: The root_entity_datetime_property_for_cutoff of this ClinicalTextConfig.  # noqa: E501
-        :rtype: str
+        :return: The root_entity_datetime_property_for_cutoff_spec of this ClinicalTextConfig.  # noqa: E501
+        :rtype: RootEntityDatetimePropertyForCutoffSpec
         """
-        return self._root_entity_datetime_property_for_cutoff
+        return self._root_entity_datetime_property_for_cutoff_spec
 
-    @root_entity_datetime_property_for_cutoff.setter
-    def root_entity_datetime_property_for_cutoff(self, root_entity_datetime_property_for_cutoff):
-        """Sets the root_entity_datetime_property_for_cutoff of this ClinicalTextConfig.
+    @root_entity_datetime_property_for_cutoff_spec.setter
+    def root_entity_datetime_property_for_cutoff_spec(self, root_entity_datetime_property_for_cutoff_spec):
+        """Sets the root_entity_datetime_property_for_cutoff_spec of this ClinicalTextConfig.
 
 
-        :param root_entity_datetime_property_for_cutoff: The root_entity_datetime_property_for_cutoff of this ClinicalTextConfig.  # noqa: E501
-        :type: str
+        :param root_entity_datetime_property_for_cutoff_spec: The root_entity_datetime_property_for_cutoff_spec of this ClinicalTextConfig.  # noqa: E501
+        :type: RootEntityDatetimePropertyForCutoffSpec
         """
 
-        self._root_entity_datetime_property_for_cutoff = root_entity_datetime_property_for_cutoff
+        self._root_entity_datetime_property_for_cutoff_spec = root_entity_datetime_property_for_cutoff_spec
 
     @property
     def root_entities_spec(self):
