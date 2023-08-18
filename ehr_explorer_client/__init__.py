@@ -28,6 +28,3 @@ CONFIG_PATH = 'config/config'  # configuration file path (relative to the top-le
 CONFIG_EHR_EXPLORER_CORE_SECTION = 'ehr-explorer'
 CONFIG_EHR_EXPLORER_CORE_URL_KEY = 'core-api-url'
 CONFIG_EHR_EXPLORER_MIMIC_III_TARGET_EXTRACTION_URL_KEY = 'mimic-iii-target-extraction-api-url'
-CONFIG_EHR_EXPLORER_CORE_ID_RETRIEVAL_PATH_KEY = 'id-retrieval-path'  # TODO redundant
-CONFIG_EHR_EXPLORER_CORE_CLINICAL_TEXT_EXTRACTION_PATH_KEY = 'clinical-text-extraction-path'  # TODO redundant
-CONFIG_EHR_EXPLORER_MIMIC_III_TARGET_EXTRACTION_PATH_KEY = 'mimic-iii-target-extraction-path'  # TODO redundant
