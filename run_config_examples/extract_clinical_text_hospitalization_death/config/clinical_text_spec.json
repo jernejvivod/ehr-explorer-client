@@ -10,5 +10,8 @@
   "root_entities_spec": {
     "root_entity": "AdmissionsEntity",
     "id_property": "hadmId"
+  },
+  "clinical_text_extraction_duration_spec": {
+    "first_minutes": 1440
   }
 }

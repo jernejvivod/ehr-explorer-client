@@ -92,6 +92,7 @@ def _add_subparser_for_clinical_text_extraction(subparsers):
     clinical_text_extraction_spec_parser.add_argument('--clinical-text-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     clinical_text_extraction_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
+    clinical_text_extraction_spec_parser.add_argument('--no-preprocessing', action='store_true', help='Do not perform text preprocessing')
     clinical_text_extraction_spec_parser.add_argument('--undersampling', type=float, help='Undersampling goal ratio of minority class examples')
     clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
     clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
@@ -111,10 +112,10 @@ def _run_clinical_text_extraction_task(parsed_args: dict):
 
     if parsed_args['test_size'] is not None:
         ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
-        _get_target_and_text(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'])
-        _get_target_and_text(parsed_args, ids_limited_test, "-test")
+        _get_target_and_text(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'], preprocess=not parsed_args['no_preprocessing'])
+        _get_target_and_text(parsed_args, ids_limited_test, "-test",  preprocess=not parsed_args['no_preprocessing'])
     else:
-        _get_target_and_text(parsed_args, ids_limited, None, None)
+        _get_target_and_text(parsed_args, ids_limited, None, None, preprocess=not parsed_args['no_preprocessing'])
 
 
 def _run_target_statistics_extraction_task(parsed_args: dict):
@@ -151,7 +152,7 @@ def _run_compute_wordification_task(parsed_args: dict):
         _get_target_and_wordification_results(parsed_args, ids_limited, None)
 
 
-def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str], undersampling: Optional[float] = None):
+def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str], undersampling: Optional[float] = None, preprocess=True):
     """Extract target values and clinical text, perform text pre-processing and save results.
 
     :param parsed_args: parameters for the computatations
@@ -172,7 +173,14 @@ def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: 
     extracted_texts = extract_clinical_text(clinical_text_config)
 
     # pre-process and save clinical text
-    save.save_clinical_text(extracted_texts, extracted_target, parsed_args['output_format'], parsed_args['output_dir'], output_file_suffix, preprocessing_steps=None)
+    save.save_clinical_text(
+        extracted_texts,
+        extracted_target,
+        parsed_args['output_format'],
+        parsed_args['output_dir'],
+        output_file_suffix,
+        preprocessing_steps=None if preprocess else []
+    )
 
 
 def _get_target_and_wordification_results(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
