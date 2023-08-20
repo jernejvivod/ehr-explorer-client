@@ -29,7 +29,7 @@ def save_clinical_text(extracted_texts: List[ClinicalTextResult],
     if output_format == TextOutputFormat.FAST_TEXT.value:
         _RE_COMBINE_WHITESPACE = re.compile(r"\s+")
         with open(os.path.join(output_dir, 'data-' + time.strftime("%Y%m%d-%H%M%S") + (output_file_suffix if output_file_suffix else "") + '.txt'), 'w') as f:
-            for extracted_text in tqdm(extracted_texts, desc='Performing text preprocessing', unit=' examples'):
+            for extracted_text in tqdm(extracted_texts, desc='Performing target matching and text preprocessing', unit=' examples'):
                 # pre-process
                 text = _RE_COMBINE_WHITESPACE.sub(' ', extracted_text.text.replace('\n', ' ')).strip()
                 text = preprocess(text, preprocessing_steps)
