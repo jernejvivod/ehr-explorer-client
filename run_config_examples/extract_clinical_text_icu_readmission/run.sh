@@ -20,6 +20,7 @@ args=("$script_path/../../ehr_explorer_client"
   --target-spec-path "$target_spec_path"
   --limit-ids 0.5
   --undersampling 1.0
+  --no-preprocessing
   --test-size 0.2
   --output-dir "$output_dir"
 )
