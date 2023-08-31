@@ -13,11 +13,13 @@ output_dir="$script_path/results"
 
 # run the command
 args=("$script_path/../../ehr_explorer_client"
+  --seed 42
   compute-wordification
   --ids-spec-path "$ids_spec_path"
   --wordification-config-path "$wordification_config_path"
   --target-spec-path "$target_spec_path"
-  --limit-ids 0.01
+  --limit-ids 0.5
+  --undersampling 1.0
   --test-size 0.2
   --output-dir "$output_dir"
 )

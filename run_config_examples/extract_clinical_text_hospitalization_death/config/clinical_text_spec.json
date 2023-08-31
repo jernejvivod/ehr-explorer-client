@@ -4,8 +4,7 @@
   "clinical_text_entity_id_property_name": "rowId",
   "clinical_text_date_time_properties_names": ["chartTime", "chartDate"],
   "root_entity_datetime_property_for_cutoff_spec": {
-    "property_for_upper_limit": "dischTime",
-    "property_for_lower_limit": "admitTime"
+    "property_for_upper_limit": "dischTime"
   },
   "root_entities_spec": {
     "root_entity": "AdmissionsEntity",
