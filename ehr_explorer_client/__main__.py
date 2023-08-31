@@ -80,7 +80,9 @@ def _add_subparser_for_wordification(subparsers):
     wordification_spec_parser.add_argument('--wordification-config-path', type=str, required=True)
     wordification_spec_parser.add_argument('--target-spec-path', type=str, required=True)
     wordification_spec_parser.add_argument('--limit-ids', default=1.0, help='Number or percentage of root entity idss to consider')
+    wordification_spec_parser.add_argument('--undersampling', type=float, help='Undersampling goal ratio of minority class examples')
     wordification_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
+    wordification_spec_parser.add_argument('--val-split', action='store_true', help='If set, the test set is further split in half into a validation and test set')
     wordification_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                            choices=[v.value for v in TextOutputFormat], help='Output format')
     wordification_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
@@ -95,6 +97,7 @@ def _add_subparser_for_clinical_text_extraction(subparsers):
     clinical_text_extraction_spec_parser.add_argument('--no-preprocessing', action='store_true', help='Do not perform text preprocessing')
     clinical_text_extraction_spec_parser.add_argument('--undersampling', type=float, help='Undersampling goal ratio of minority class examples')
     clinical_text_extraction_spec_parser.add_argument('--test-size', type=test_size, help='Test set size (no train-test split is performed if not specified)')
+    clinical_text_extraction_spec_parser.add_argument('--val-split', action='store_true', help='If set, the test set is further split in half into a validation and test set')
     clinical_text_extraction_spec_parser.add_argument('--output-format', type=str, default=TextOutputFormat.FAST_TEXT.value,
                                                       choices=[v.value for v in TextOutputFormat], help='Output format')
     clinical_text_extraction_spec_parser.add_argument('--output-dir', type=dir_path, default='.', help='Directory in which to store the outputs')
@@ -111,8 +114,16 @@ def _run_clinical_text_extraction_task(parsed_args: dict):
     ids_limited = limit_ids(retrieved_ids, parsed_args['limit_ids'])
 
     if parsed_args['test_size'] is not None:
-        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
+        ids_limited_train, ids_limited_test_val = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
+        ids_limited_test, ids_limited_val = train_test_split(ids_limited_test_val, test_size=0.5, random_state=parsed_args['seed'])
         _get_target_and_text(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'], preprocess=not parsed_args['no_preprocessing'])
+
+        if parsed_args['val_split']:
+            _get_target_and_text(parsed_args, ids_limited_val, "-val",  preprocess=not parsed_args['no_preprocessing'])
+        else:
+            # if not performing a validation split
+            ids_limited_test.extend(ids_limited_val)
+
         _get_target_and_text(parsed_args, ids_limited_test, "-test",  preprocess=not parsed_args['no_preprocessing'])
     else:
         _get_target_and_text(parsed_args, ids_limited, None, None, preprocess=not parsed_args['no_preprocessing'])
@@ -145,8 +156,16 @@ def _run_compute_wordification_task(parsed_args: dict):
     ids_limited = limit_ids(retrieved_ids, parsed_args['limit_ids'])
 
     if parsed_args['test_size'] is not None:
-        ids_limited_train, ids_limited_test = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
-        _get_target_and_wordification_results(parsed_args, ids_limited_train, "-train")
+        ids_limited_train, ids_limited_test_val = train_test_split(ids_limited, test_size=parsed_args['test_size'], random_state=parsed_args['seed'])
+        ids_limited_test, ids_limited_val = train_test_split(ids_limited_test_val, test_size=0.5, random_state=parsed_args['seed'])
+        _get_target_and_wordification_results(parsed_args, ids_limited_train, "-train", undersampling=parsed_args['undersampling'])
+
+        if parsed_args['val_split']:
+            _get_target_and_wordification_results(parsed_args, ids_limited_val, "-val")
+        else:
+            # if not performing a validation split
+            ids_limited_test.extend(ids_limited_val)
+
         _get_target_and_wordification_results(parsed_args, ids_limited_test, "-test")
     else:
         _get_target_and_wordification_results(parsed_args, ids_limited, None)
@@ -183,22 +202,27 @@ def _get_target_and_text(parsed_args: dict, ids: List[str], output_file_suffix: 
     )
 
 
-def _get_target_and_wordification_results(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str]):
+def _get_target_and_wordification_results(parsed_args: dict, ids: List[str], output_file_suffix: Optional[str], undersampling: Optional[float] = None):
     """Extract target values, compute Wordification, and save results.
 
     :param parsed_args: parameters for the computatations
     :param ids: entity IDs
     :param output_file_suffix: suffix to add to the resulting file name.
+    :param undersampling: if specified, perform undersampling to achieve specified ratio of minority class
     """
 
     # extract target values
     target_extraction_spec = parse_request_spec_target(parsed_args['target_spec_path'], ids)
     extracted_target = extract_target(target_extraction_spec)
 
-    wordification_config = parse_request_spec_wordification(parsed_args['wordification_config_path'], ids)
+    # perform undersampling
+    if undersampling is not None:
+        extracted_target = undersample_extracted_target(extracted_target, undersampling, seed=parsed_args['seed'])
+
+    wordification_config = parse_request_spec_wordification(parsed_args['wordification_config_path'], list(map(lambda x: x.target_entity_id, extracted_target)))
 
     wordification_config.property_spec.root_entity_and_lime_limit = [
-        RootEntityAndTimeLimit(root_entity_id=e.root_entity_id, time_lim=e.date_time_limit) for e in extracted_target
+        RootEntityAndTimeLimit(root_entity_id=e.target_entity_id, time_lim=e.date_time_limit) for e in extracted_target
     ]
 
     wordification_results = compute_wordification(wordification_config)

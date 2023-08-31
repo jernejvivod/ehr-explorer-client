@@ -1,0 +1,164 @@
+{
+  "root_entities_spec": {
+    "root_entity": "AdmissionsEntity",
+    "id_property": "hadmId"
+  },
+  "property_spec": {
+    "entries": [
+      {
+        "entity": "AdmissionsEntity",
+        "properties": [
+          "patientsEntity",
+          "admissionType",
+          "admissionLocation",
+          "dischargeLocation",
+          "insurance",
+          "language",
+          "religion",
+          "maritalStatus",
+          "ethnicity",
+          "diagnosis",
+          "hasChartEventsData",
+          "calloutEntitys",
+          "cptEventsEntitys",
+          "diagnosesIcdEntitys",
+          "drgCodesEntitys",
+          "proceduresIcdEntitys",
+          "servicesEntitys",
+          "transfersEntitys"
+        ],
+        "property_for_limit": "dischTime"
+      },
+      {
+        "entity": "PatientsEntity",
+        "properties": [
+          "gender",
+          "icuStaysEntitys"
+        ]
+      },
+      {
+        "entity": "IcuStaysEntity",
+        "properties": [
+          "dbSource",
+          "firstCareUnit",
+          "lastCareUnit",
+          "firstWardId",
+          "lastWardId",
+          "los"
+        ],
+        "property_for_limit": "outTime",
+        "composite_property_spec_entries": [
+          {
+            "property_on_this_entity": "inTime",
+            "property_on_other_entity": "dob",
+            "foreign_key_path": [
+              "IcuStaysEntity",
+              "PatientsEntity"
+            ],
+            "composite_property_name": "ageAtAdmission",
+            "combiner": "DATE_DIFF"
+          }
+        ]
+      },
+      {
+        "entity": "DiagnosesIcdEntity",
+        "properties": [
+          "seqNum",
+          "icd9Code"
+        ]
+      },
+      {
+        "entity": "CalloutEntity",
+        "properties": [
+          "submitWardId",
+          "submitCareUnit",
+          "currWardId",
+          "currCareUnit",
+          "calloutWardId",
+          "calloutService",
+          "requestTele",
+          "requestResp",
+          "requestCdiff",
+          "requestMrsa",
+          "requestVre",
+          "calloutStatus",
+          "calloutOutcome",
+          "dischargeWardId",
+          "acknowledgeStatus"
+        ]
+      },
+      {
+        "entity": "CptEventsEntity",
+        "properties": [
+          "costCenter",
+          "chartDate",
+          "cptCd",
+          "cptNumber",
+          "cptSuffix",
+          "ticketIdSeq",
+          "sectionHeader",
+          "subsectionHeader",
+          "description"
+        ]
+      },
+      {
+        "entity": "DrgCodesEntity",
+        "properties": [
+          "drgType",
+          "drgCode",
+          "drgSeverity",
+          "drgMortality"
+        ]
+      },
+      {
+        "entity": "ProceduresIcdEntity",
+        "properties": [
+          "seqNum",
+          "icd9Code"
+        ]
+      },
+      {
+        "entity": "ServicesEntity",
+        "properties": [
+          "prevService",
+          "currService"
+        ]
+      },
+      {
+        "entity": "TransfersEntity",
+        "properties": [
+          "dbSource",
+          "eventType",
+          "prevCareUnit",
+          "currCareUnit",
+          "prevWardId",
+          "currWardId",
+          "los"
+        ]
+      }
+    ]
+  },
+  "value_transformation_spec": {
+    "entries": [
+      {
+        "entity": "IcuStaysEntity",
+        "_property": "ageAtAdmission",
+        "transform": {
+          "kind": "DATE_DIFF_ROUND",
+          "date_diff_round_type": "TEN_YEARS"
+        }
+      },
+      {
+        "entity": "IcuStaysEntity",
+        "_property": "los",
+        "transform": {
+          "kind": "ROUNDING",
+          "rounding_multiple": "1.0"
+        }
+      }
+    ]
+  },
+  "concatenation_spec": {
+    "concatenation_scheme": "ZERO"
+  }
+}
